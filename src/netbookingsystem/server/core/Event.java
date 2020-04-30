@@ -1,7 +1,6 @@
-package netbookingsystem.server;
+package netbookingsystem.server.core;
 
 import javax.lang.model.element.Name;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
