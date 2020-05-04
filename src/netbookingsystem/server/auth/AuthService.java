@@ -63,10 +63,6 @@ public class AuthService {
         }
         return AuthStatus.WRONG_PASS;
     }
-
-
-
-
     public AuthStatus createAccount(String username, String password, String email, String firstname, String lastname) throws Exception {
         if (!containsName(users, username)) { //αν δεν υπάρχει ο λογαριασμός μπορεί να δημιουργηθεί
 
