@@ -8,7 +8,6 @@ import java.rmi.RemoteException;
 
 public interface RemoteInterface extends Remote {
 
-    public login()
 
 
 }

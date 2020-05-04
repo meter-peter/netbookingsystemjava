@@ -1,13 +1,18 @@
 package netbookingsystem.server.rmi;
 
-import javafx.concurrent.Task;
+
+import netbookingsystem.server.auth.AuthService;
 
 public class RemoteFunctions implements RemoteInterface{
-    public RemoteFunctions(){
-        super();
+    AuthService authService;
+
+    public RemoteFunctions(AuthService authService) {
+        this.authService = authService;
     }
 
-    public <T> T executeTask(Task<T> t) {
-        return t.execute();
+    public void login(String username, String password){
+
+
     }
+
 }

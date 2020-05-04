@@ -1,11 +1,14 @@
 package netbookingsystem.server.auth;
 
+import java.util.UUID;
+
 public class User {
     String username;
     String password;
     String email;
     String firstname;
     String latsname;
+    String id;
 
     public User(String username, String password, String email, String firstname, String latsname) {
         this.username = username;
@@ -13,6 +16,15 @@ public class User {
         this.email = email;
         this.firstname = firstname;
         this.latsname = latsname;
+        this.id= UUID.randomUUID().toString();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUsername() {
