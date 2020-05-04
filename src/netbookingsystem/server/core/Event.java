@@ -40,5 +40,4 @@ class Show{
 
 public class Event extends Show {
     ArrayList<Show> shows;
-    int
 }
