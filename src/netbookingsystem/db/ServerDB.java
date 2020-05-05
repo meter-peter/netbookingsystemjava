@@ -1,8 +1,12 @@
 package netbookingsystem.db;
 
+import netbookingsystem.server.core.Ticket;
 import netbookingsystem.server.netdriver.Action;
 import netbookingsystem.server.core.Event;
 import netbookingsystem.server.netdriver.Protocol;
+import netbookingsystem.server.netdriver.Status;
+import netbookingsystem.server.netdriver.Type;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -18,6 +22,7 @@ public class ServerDB {
     private InputStream inputStream;
     private ObjectInputStream in;
     private static final String pathToEventsFile = "src/netbookingsystem/db/events.dat";
+    private static final String pathToTicketsFile = "src/netbookingsystem/db/tickets.dat";
 
     public ServerDB () throws IOException {
         this.serverSocket = new ServerSocket(5555);
@@ -41,20 +46,33 @@ public class ServerDB {
             if (ob instanceof Protocol) {
                 Protocol protocol = (Protocol) ob;
                 Action action = protocol.getAction();
+                Type type = protocol.getType();
                 System.out.println(action);
                 //read write action
+                Status newStatus = Status.POST; //status from serverDB
                 switch (action) {
-                    case READ:
-                        ArrayList<Event> events = serverDB.read();
-                        Protocol successProtocol = new Protocol(action, events);
-                        serverDB.getOut().writeObject(successProtocol);
-                    case WRITE:
-                        if (serverDB.write(protocol.getEvent())) {
-                            successProtocol = new Protocol(action, true);
-                            serverDB.getOut().writeObject(successProtocol);
+                    case READ: //read operation from database
+                        switch (type) { //type of read operation
+                            case EVENT:
+                                ArrayList<Event> events = serverDB.readEvents(); //read events
+                                Protocol responsePacketI = new Protocol(action, type, newStatus, events);
+                                serverDB.getOut().writeObject(responsePacketI);
+                            case TICKET:
+                                ArrayList<Ticket> tickets = serverDB.readTickets();
+                                Protocol responsePacketII = new Protocol(action, type, newStatus, tickets);
+                                serverDB.getOut().writeObject(responsePacketII);
                         }
-                        else {
-                            Protocol errorProtocol = new Protocol(action, false);
+                    case WRITE:
+                        switch (type) {
+                            case EVENT:
+                                if (serverDB.writeEvent(protocol.getEvent())) {
+                                    Protocol responsePacketIII = new Protocol(action, type, newStatus);
+                                    serverDB.getOut().writeObject(responsePacketIII);
+                                }
+                            case TICKET:
+                                if (serverDB.writeTicket(protocol.getTicket())) {
+                                    Protocol responseProtocolIV = new Protocol(action, type, newStatus);
+                                }
                         }
                 }
             }
@@ -68,21 +86,39 @@ public class ServerDB {
     }
 
     //return events
-    public ArrayList<Event> read () throws IOException, ClassNotFoundException {
+    public ArrayList<Event> readEvents () throws IOException, ClassNotFoundException {
         FileIO fileIO = new FileIO(pathToEventsFile);
-        ArrayList<Event> events = fileIO.readFromFile();
+        ArrayList<Event> events = fileIO.readEventsFromFile();
         return events;
     }
-
-    public boolean write (Event event) throws IOException, ClassNotFoundException {
+    //write new event
+    public boolean writeEvent (Event event) throws IOException, ClassNotFoundException {
         FileIO fileIO = new FileIO(pathToEventsFile);
-        if (fileIO.writeToFile(event)) {
+        if (fileIO.writeEventToFile(event)) {
             return true;
         }
         else {
             return false;
         }
     }
+
+    //return tickets
+    public ArrayList<Ticket> readTickets () throws IOException, ClassNotFoundException {
+        FileIO fileIO = new FileIO(pathToTicketsFile);
+        ArrayList<Ticket> tickets = fileIO.readTicketsFromFile();
+        return tickets;
+    }
+    //write new ticket
+    public boolean writeTicket (Ticket ticket) throws IOException, ClassNotFoundException {
+        FileIO fileIO = new FileIO(pathToTicketsFile);
+        if (fileIO.writeTicketToFile(ticket)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
     public void initStreams () throws IOException {
         this.outputStream = this.socket.getOutputStream();

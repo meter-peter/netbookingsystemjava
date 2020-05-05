@@ -1,6 +1,7 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.core.Event;
+import netbookingsystem.server.core.Ticket;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,9 +16,9 @@ public class FileIO {
         this.file = new File(this.pathToFile);
     }
 
-    public boolean writeToFile (Event event) throws IOException, ClassNotFoundException {
+    public boolean writeEventToFile (Event event) throws IOException, ClassNotFoundException {
         try {
-            ArrayList<Event> events = readFromFile();
+            ArrayList<Event> events = readEventsFromFile();
             events.add(event);
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
             out.writeObject(events);
@@ -31,7 +32,7 @@ public class FileIO {
         }
     }
 
-    public ArrayList<Event> readFromFile () throws IOException, ClassNotFoundException {
+    public ArrayList<Event> readEventsFromFile () throws IOException, ClassNotFoundException {
         ArrayList<Event> events = new ArrayList<>();
         if (!file.exists()) {
             file.getParentFile().mkdirs();
@@ -41,6 +42,35 @@ public class FileIO {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
             events = (ArrayList<Event>) in.readObject();
             return events;
+        }
+    }
+
+    public boolean writeTicketToFile (Ticket ticket) {
+        try {
+            ArrayList<Ticket> tickets = readTicketsFromFile();
+            tickets.add(ticket);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            out.writeObject(tickets);
+            out.flush();
+            out.close();
+            return true;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public ArrayList<Ticket> readTicketsFromFile () throws IOException, ClassNotFoundException {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            return tickets;
+        }
+        else {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+            tickets = (ArrayList<Ticket>) in.readObject();
+            return tickets;
         }
     }
 
