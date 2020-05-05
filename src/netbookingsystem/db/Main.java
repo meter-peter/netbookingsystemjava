@@ -1,10 +1,10 @@
 package netbookingsystem.db;
 
-import netbookingsystem.server.core.Ticket;
+import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.base.Ticket;
 import netbookingsystem.server.netdriver.Action;
-import netbookingsystem.server.core.Event;
 import netbookingsystem.server.netdriver.Protocol;
-import netbookingsystem.server.core.Show;
 import netbookingsystem.server.netdriver.Status;
 import netbookingsystem.server.netdriver.Type;
 
@@ -32,7 +32,11 @@ public class Main{
 
         Ticket ticket = new Ticket("NikosRekkas", 3, event.getTitle(), event.getType(), show);
 
-        Protocol packetToSend = new Protocol(Action.WRITE, Type.TICKET, Status.GET, ticket);
+        Protocol packetToSend = new Protocol();
+        packetToSend.setAction(Action.WRITE);
+        packetToSend.setType(Type.TICKET);
+        packetToSend.setStatus(Status.GET);
+        packetToSend.setTicket(ticket);
 
         out.writeObject(packetToSend);
 

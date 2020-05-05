@@ -23,13 +23,15 @@ public class DBSocket {
         shows.add(show);
         Event event = new Event("Damian marley live in Athens", "CONCERT", shows);
 
-        Protocol packetToSend = new Protocol(Action.WRITE, event);
+        Protocol packetToSend = new Protocol();
+        packetToSend.setAction(Action.WRITE);
+        packetToSend.setType(Type.TICKET);
+        packetToSend.setStatus(Status.GET);
 
         out.writeObject(packetToSend);
 
         Protocol packetFromServer = (Protocol) in.readObject();
 
-        System.out.println(packetFromServer.getAction() + " " + packetFromServer.isStatus());
 
     }{
 

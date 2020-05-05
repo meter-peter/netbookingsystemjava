@@ -30,10 +30,10 @@ public class Main {
         options = new JPanel();
 
         datePicker = new DatePicker();
-        datePicker.get
+        //datePicker.get
 
-        type = new JComboBox<>();
-        type.addItem(EventType.CINEMA.getType());
+        //type = new JComboBox<>();
+        //type.addItem(EventType.CINEMA.getType());
         type.addItem(EventType.CONCERT.getType());
         type.addItem(EventType.PARTY.getType());
         type.addItem(EventType.THEATURE.getType());

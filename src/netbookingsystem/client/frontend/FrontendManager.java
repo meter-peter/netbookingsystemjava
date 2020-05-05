@@ -11,7 +11,7 @@ public class FrontendManager {
     public FrontendManager(RMI rmi){
         this.rmi=rmi;
         LoginRegister loginRegister = new LoginRegister(this);
-        mainWindow = new Main();
+        //mainWindow = new Main();
 
 
 
@@ -21,7 +21,7 @@ public class FrontendManager {
 
 
     private void onAuth(String username){
-        mainWindow = new Main(String username , this);
+      //  mainWindow = new Main(String username , this);
 
     }
 
