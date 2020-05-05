@@ -1,7 +1,7 @@
-package netbookingsystem.client.GUI;
+package netbookingsystem.client.frontend;
 
 
-import netbookingsystem.client.FrontendManager;
+import netbookingsystem.client.frontend.FrontendManager;
 
 import javax.swing.*;
 import java.awt.*;

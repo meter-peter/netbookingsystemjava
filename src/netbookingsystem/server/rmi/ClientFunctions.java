@@ -1,18 +1,16 @@
 package netbookingsystem.server.rmi;
 
 
-import netbookingsystem.RemoteInterface;
+import netbookingsystem.ClientInterface;
 import netbookingsystem.server.auth.AuthService;
 import netbookingsystem.server.auth.AuthStatus;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
-public class RemoteFunctions implements RemoteInterface {
+public class ClientFunctions implements ClientInterface {
     AuthService authService;
 
-    public RemoteFunctions(AuthService authService) throws RemoteException {
+    public ClientFunctions(AuthService authService) throws RemoteException {
         super();
         this.authService = authService;
     }
@@ -22,8 +20,6 @@ public class RemoteFunctions implements RemoteInterface {
 
 
     }
-
-
     public AuthStatus register(String username , String password , String email , String firstname, String lastname) throws Exception {
         return authService.createAccount(username, password, email, firstname, lastname);
     }

@@ -1,7 +1,7 @@
 package netbookingsystem.server.netdriver;
 
-import netbookingsystem.server.core.Event;
-import netbookingsystem.server.core.Ticket;
+import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Ticket;
 
 import java.io.Serializable;
 import java.util.ArrayList;

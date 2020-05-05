@@ -2,7 +2,7 @@ package netbookingsystem.db;
 
 import netbookingsystem.server.core.Ticket;
 import netbookingsystem.server.netdriver.Action;
-import netbookingsystem.server.core.Event;
+import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.netdriver.Protocol;
 import netbookingsystem.server.netdriver.Status;
 import netbookingsystem.server.netdriver.Type;

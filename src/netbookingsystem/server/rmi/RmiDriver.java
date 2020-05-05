@@ -1,23 +1,21 @@
 package netbookingsystem.server.rmi;
 
-import netbookingsystem.RemoteInterface;
+import netbookingsystem.ClientInterface;
 
 import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class RmiDriver {
-    RemoteFunctions remoteFunctions;
+    ClientFunctions remoteFunctions;
 
 
-    public RmiDriver(RemoteFunctions remoteFunctions){
+    public RmiDriver(ClientFunctions remoteFunctions){
         this.remoteFunctions = remoteFunctions;
 
     try {
         LocateRegistry.createRegistry(5555);
-        RemoteInterface stub = (RemoteInterface) UnicastRemoteObject.exportObject(remoteFunctions, 5555);
+        ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(remoteFunctions, 5555);
 
 
         Naming.rebind("rmi://localhost:5555/login"
