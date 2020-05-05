@@ -1,9 +1,12 @@
 package netbookingsystem.db;
 
+import netbookingsystem.server.core.Ticket;
 import netbookingsystem.server.netdriver.Action;
-import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.Event;
 import netbookingsystem.server.netdriver.Protocol;
-import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.Show;
+import netbookingsystem.server.netdriver.Status;
+import netbookingsystem.server.netdriver.Type;
 
 import java.io.*;
 import java.net.Socket;
@@ -27,39 +30,14 @@ public class Main{
         shows.add(show);
         Event event = new Event("Damian marley live in Athens", "CONCERT", shows);
 
-        Protocol packetToSend = new Protocol(Action.WRITE, event);
+        Ticket ticket = new Ticket("NikosRekkas", 3, event.getTitle(), event.getType(), show);
+
+        Protocol packetToSend = new Protocol(Action.WRITE, Type.TICKET, Status.GET, ticket);
 
         out.writeObject(packetToSend);
 
         Protocol packetFromServer = (Protocol) in.readObject();
 
-        System.out.println(packetFromServer.getAction()+" "+packetFromServer.isStatus());
-
     }
-    //write users to file
-    public static void writeToFile(Event event) throws IOException, ClassNotFoundException {
-        ArrayList<Event> users = readFromFile();
-        users.add(event);
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream( new File("src/netbookingsystem/server/db/events.dat")));
-        out.writeObject(users);
-        out.flush();
-        out.close();
-    }
-
-    //read users from file
-    public static ArrayList<Event> readFromFile() throws IOException, ClassNotFoundException {
-        ArrayList<Event> users = new ArrayList<>();
-        File f = new File("src/netbookingsystem/server/db/events.dat");
-        if (!f.exists()) {
-            f.getParentFile().mkdirs();
-            return users;
-        } else {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(f));
-            users = (ArrayList<Event>) in.readObject();
-            return users;
-        }
-    }
-
-
 
 }
