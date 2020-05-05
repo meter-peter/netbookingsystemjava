@@ -50,12 +50,14 @@ public class ServerDB {
                 System.out.println(action);
                 //read write action
                 Status newStatus = Status.POST; //status from serverDB
+                Protocol response = new Protocol();
+
                 switch (action) {
                     case READ: //read operation from database
                         switch (type) { //type of read operation
                             case EVENT:
                                 ArrayList<Event> events = serverDB.readEvents(); //read events
-                                Protocol responsePacketI = new Protocol(action, type, newStatus, events);
+                                response
                                 serverDB.getOut().writeObject(responsePacketI);
                             case TICKET:
                                 ArrayList<Ticket> tickets = serverDB.readTickets();
