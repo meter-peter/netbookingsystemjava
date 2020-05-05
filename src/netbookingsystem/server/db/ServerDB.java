@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import static netbookingsystem.server.core.Action.WRITE;
 
@@ -19,7 +20,7 @@ public class ServerDB {
     private ObjectOutputStream out;
     private InputStream inputStream;
     private ObjectInputStream in;
-    private static final String pathToEventsFile = "src/netbookingsystem/server/db/";
+    private static final String pathToEventsFile = "src/netbookingsystem/server/db/events.dat";
 
     public ServerDB () throws IOException {
         this.serverSocket = new ServerSocket(5555);
@@ -39,9 +40,11 @@ public class ServerDB {
             serverDB.initStreams();
             //get income packet
             Object ob = serverDB.getIn().readObject();
+            System.out.println("pernaei!");
             if (ob instanceof Protocol) {
                 Protocol protocol = (Protocol) ob;
                 Action action = protocol.getAction();
+                System.out.println(action);
                 //read write action
                 switch (action) {
                     case READ:
@@ -51,6 +54,7 @@ public class ServerDB {
                     case WRITE:
                         if (serverDB.write(protocol.getEvent())) {
                             successProtocol = new Protocol(action, true);
+                            serverDB.getOut().writeObject(successProtocol);
                         }
                         else {
                             Protocol errorProtocol = new Protocol(action, false);
