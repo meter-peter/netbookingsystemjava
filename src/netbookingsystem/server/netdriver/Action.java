@@ -1,4 +1,4 @@
-package netbookingsystem.server.core;
+package netbookingsystem.server.netdriver;
 
 public enum Action {
     READ,

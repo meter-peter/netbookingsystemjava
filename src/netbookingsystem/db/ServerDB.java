@@ -1,15 +1,12 @@
-package netbookingsystem.server.db;
+package netbookingsystem.db;
 
-import netbookingsystem.server.core.Action;
+import netbookingsystem.server.netdriver.Action;
 import netbookingsystem.server.core.Event;
-import netbookingsystem.server.core.Protocol;
+import netbookingsystem.server.netdriver.Protocol;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Optional;
-
-import static netbookingsystem.server.core.Action.WRITE;
 
 
 public class ServerDB {

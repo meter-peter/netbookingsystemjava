@@ -1,4 +1,4 @@
-package netbookingsystem.server.db;
+package netbookingsystem.db;
 
 import netbookingsystem.server.core.Event;
 
