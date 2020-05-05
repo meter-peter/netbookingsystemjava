@@ -17,7 +17,7 @@ public class ServerDB {
     private ObjectOutputStream out;
     private InputStream inputStream;
     private ObjectInputStream in;
-    private static final String pathToEventsFile = "src/netbookingsystem/server/db/events.dat";
+    private static final String pathToEventsFile = "src/netbookingsystem/db/events.dat";
 
     public ServerDB () throws IOException {
         this.serverSocket = new ServerSocket(5555);
