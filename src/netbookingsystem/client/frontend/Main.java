@@ -1,5 +1,6 @@
 package netbookingsystem.client.frontend;
 
+import javafx.scene.control.DatePicker;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.EventType;
 
@@ -16,6 +17,7 @@ public class Main {
     JPanel options;
     JComboBox<String> type;
     FrontendManager frontendManager;
+    DatePicker datePicker;
 
     public Main(String user, FrontendManager frontendManager){
         this.username=user;
@@ -27,11 +29,16 @@ public class Main {
         eventJList = new JList<>();
         options = new JPanel();
 
+        datePicker = new DatePicker();
+        datePicker.get
+
         type = new JComboBox<>();
         type.addItem(EventType.CINEMA.getType());
         type.addItem(EventType.CONCERT.getType());
         type.addItem(EventType.PARTY.getType());
         type.addItem(EventType.THEATURE.getType());
+
+
 
 
         jFrame.add(content);
