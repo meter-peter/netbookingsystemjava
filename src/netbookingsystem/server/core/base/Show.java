@@ -1,4 +1,4 @@
-package netbookingsystem.server.core;
+package netbookingsystem.server.core.base;
 
 import java.io.Serializable;
 import java.util.Date;

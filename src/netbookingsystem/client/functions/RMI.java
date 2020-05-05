@@ -1,6 +1,6 @@
-package netbookingsystem.client;
+package netbookingsystem.client.functions;
 
-import netbookingsystem.RemoteInterface;
+import netbookingsystem.ClientInterface;
 import netbookingsystem.server.auth.AuthStatus;
 
 import java.rmi.Naming;
@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class RMI {
-    RemoteInterface stub;
+    ClientInterface stub;
 
         public RMI() {
             initRMI();
@@ -19,7 +19,7 @@ public class RMI {
            try {
                Registry registry = LocateRegistry.getRegistry(5555);
 
-               stub = (RemoteInterface) Naming.lookup("rmi://localhost:5555/login");
+               stub = (ClientInterface) Naming.lookup("rmi://localhost:5555/login");
 
            } catch (Exception e) {
                System.err.println("Client exception: " + e.toString());

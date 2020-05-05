@@ -1,9 +1,9 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.netdriver.Action;
-import netbookingsystem.server.core.Event;
+import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.netdriver.Protocol;
-import netbookingsystem.server.core.Show;
+import netbookingsystem.server.core.base.Show;
 
 import java.io.*;
 import java.net.Socket;

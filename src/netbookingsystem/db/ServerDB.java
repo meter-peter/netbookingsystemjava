@@ -1,7 +1,7 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.netdriver.Action;
-import netbookingsystem.server.core.Event;
+import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.netdriver.Protocol;
 import java.io.*;
 import java.net.ServerSocket;

@@ -1,6 +1,6 @@
 package netbookingsystem.db;
 
-import netbookingsystem.server.core.Event;
+import netbookingsystem.server.core.base.Event;
 
 import java.io.*;
 import java.util.ArrayList;
