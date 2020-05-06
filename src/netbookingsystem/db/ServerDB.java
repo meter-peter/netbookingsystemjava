@@ -61,6 +61,7 @@ public class ServerDB {
                                 response.setType(type);
                                 response.setStatus(newStatus);
                                 serverDB.getOut().writeObject(response);
+                                break;
                             case TICKET:
                                 ArrayList<Ticket> tickets = serverDB.readTickets();
                                 response.setTickets(tickets);
@@ -68,7 +69,9 @@ public class ServerDB {
                                 response.setType(type);
                                 response.setStatus(newStatus);
                                 serverDB.getOut().writeObject(response);
+                                break;
                         }
+                        break;
                     case WRITE:
                         switch (type) {
                             case EVENT:
@@ -79,6 +82,7 @@ public class ServerDB {
                                     response.setStatus(newStatus);
                                     serverDB.getOut().writeObject(response);
                                 }
+                                break;
                             case TICKET:
                                 System.out.println("Ticket");
                                 if (serverDB.writeTickets(protocol.getTickets())) {
@@ -87,7 +91,9 @@ public class ServerDB {
                                     response.setStatus(newStatus);
                                     serverDB.getOut().writeObject(response);
                                 }
+                                break;
                         }
+                        break;
                 }
             }
             serverDB.closeConnention();

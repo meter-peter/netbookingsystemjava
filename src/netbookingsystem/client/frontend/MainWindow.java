@@ -1,6 +1,6 @@
 package netbookingsystem.client.frontend;
 
-import javafx.scene.control.DatePicker;
+//import javafx.scene.control.DatePicker;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.EventType;
 
@@ -18,8 +18,8 @@ public class MainWindow {
     JPanel options;
     JComboBox<String> type;
     FrontendManager frontendManager;
-    DatePicker datePickerFrom;
-    DatePicker datePickerTo;
+    //DatePicker datePickerFrom;
+    //DatePicker datePickerTo;
 
     public MainWindow(String user, FrontendManager frontendManager){
         this.username=user;

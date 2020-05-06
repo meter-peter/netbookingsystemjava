@@ -57,6 +57,7 @@ public class DBSocket {
        protocol.setAction(Action.WRITE);
        protocol.setType(Type.EVENT);
        protocol.setStatus(Status.GET);
+       protocol.setEvents(events);
        setToSend(protocol);
        getOut().writeObject(getToSend());
        Protocol receive = (Protocol) getIn().readObject();
