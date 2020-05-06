@@ -1,6 +1,5 @@
 package netbookingsystem.db;
-
-import netbookingsystem.server.core.Ticket;
+import netbookingsystem.server.core.base.Ticket;
 import netbookingsystem.server.netdriver.Action;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.netdriver.Protocol;
@@ -50,28 +49,41 @@ public class ServerDB {
                 System.out.println(action);
                 //read write action
                 Status newStatus = Status.POST; //status from serverDB
+                Protocol response = new Protocol();
+
                 switch (action) {
                     case READ: //read operation from database
                         switch (type) { //type of read operation
                             case EVENT:
                                 ArrayList<Event> events = serverDB.readEvents(); //read events
-                                Protocol responsePacketI = new Protocol(action, type, newStatus, events);
-                                serverDB.getOut().writeObject(responsePacketI);
+                                response.setEvents(events);
+                                response.setAction(action);
+                                response.setType(type);
+                                response.setStatus(newStatus);
+                                serverDB.getOut().writeObject(response);
                             case TICKET:
                                 ArrayList<Ticket> tickets = serverDB.readTickets();
-                                Protocol responsePacketII = new Protocol(action, type, newStatus, tickets);
-                                serverDB.getOut().writeObject(responsePacketII);
+                                response.setTickets(tickets);
+                                response.setAction(action);
+                                response.setType(type);
+                                response.setStatus(newStatus);
+                                serverDB.getOut().writeObject(response);
                         }
                     case WRITE:
                         switch (type) {
                             case EVENT:
                                 if (serverDB.writeEvent(protocol.getEvent())) {
-                                    Protocol responsePacketIII = new Protocol(action, type, newStatus);
-                                    serverDB.getOut().writeObject(responsePacketIII);
+                                    response.setAction(action);
+                                    response.setType(type);
+                                    response.setStatus(newStatus);
+                                    serverDB.getOut().writeObject(response);
                                 }
                             case TICKET:
                                 if (serverDB.writeTicket(protocol.getTicket())) {
-                                    Protocol responseProtocolIV = new Protocol(action, type, newStatus);
+                                    response.setAction(action);
+                                    response.setType(type);
+                                    response.setStatus(newStatus);
+                                    serverDB.getOut().writeObject(response);
                                 }
                         }
                 }

@@ -17,37 +17,6 @@ public class Protocol implements Serializable {
     private Status status;
 
 
-    //write event
-    public Protocol (Action action, Type type, Status status, Event event) {
-        this.action = action;
-        this.type = type;
-        this.event = event;
-    }
-    //read events
-    public Protocol (Action action, Type type, Status status, ArrayList<Event> events) {
-        this.action = action;
-        this.type = type;
-        this.events = events;
-    }
-    //read tickets
-    public Protocol (Action action, Type type, Status status, ArrayList<Ticket> tickets) {
-        this.action = action;
-        this.type = type;
-        this.tickets = tickets;
-    }
-    //write ticket
-    public Protocol (Action action, Type type, Status status, Ticket ticket) {
-        this.action = action;
-        this.type = type;
-        this.ticket = ticket;
-    }
-    //for write operation response
-    public Protocol (Action action, Type type, Status status) {
-        this.action = action;
-        this.type = type;
-        this.status = status;
-    }
-
     public ArrayList<Ticket> getTickets() {
         return tickets;
     }
