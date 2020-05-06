@@ -6,12 +6,12 @@ import netbookingsystem.server.auth.AuthStatus;
 public class FrontendManager {
 
     RMI rmi;
-    Main mainWindow;
+    MainWindow mainWindow;
+    LoginRegister loginRegister;
 
     public FrontendManager(RMI rmi){
         this.rmi=rmi;
-        LoginRegister loginRegister = new LoginRegister(this);
-        //mainWindow = new Main();
+        loginRegister = new LoginRegister(this);
 
 
 
@@ -21,7 +21,9 @@ public class FrontendManager {
 
 
     private void onAuth(String username){
-      //  mainWindow = new Main(String username , this);
+        mainWindow = new MainWindow(username , this);
+        loginRegister.dispose();
+
 
     }
 

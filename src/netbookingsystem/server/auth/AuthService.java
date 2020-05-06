@@ -27,19 +27,17 @@ public class AuthService {
         this.users=new ArrayList<>();
         this.loggedInUsers=new ArrayList<>();
         initUsers();
-
     }
 
     public void initUsers() throws IOException {
         usersFile = new File("users.json");
         if (!usersFile.exists()) {
             usersFile.createNewFile();
-            loggedInUsers = new ArrayList<>();
+            users = new ArrayList<>();
         } else {
-            loggedInUsers = getUsers();
+            users = getUsers();
         }
     }
-
 
     public AuthStatus loginAccount(String username, String password) throws Exception {
         boolean flag = false;
@@ -57,36 +55,27 @@ public class AuthService {
                     java.util.concurrent.TimeUnit.SECONDS.sleep(2); //timeout se periptwsh pou to exei lathos gia na kathysterhsoume se periptwsh bruteforce attack;
                     return AuthStatus.WRONG_PASS;
                 }
-
             }
-
         }
         return AuthStatus.WRONG_PASS;
     }
+
     public AuthStatus createAccount(String username, String password, String email, String firstname, String lastname) throws Exception {
         if (!containsName(users, username)) { //αν δεν υπάρχει ο λογαριασμός μπορεί να δημιουργηθεί
-
-
             User tobecreated = new User(username,
                     password,
                     email,
                     firstname,
                     lastname);
-
             System.out.println(tobecreated.toString());
 
             //αρχικοποιήσεις μετα γην εγγραφή
             users.add(tobecreated);
-           loggedInUsers.add(tobecreated);
-
+            loggedInUsers.add(tobecreated);
             updateUsers(users);
-            // controller.continuewithregister(tobecreated);
-            //controller.checkintegrity();
             return AuthStatus.SUCCESS;
         }
         return AuthStatus.DUPLICATE_USER;
-
-
     }
 
     private boolean containsName(List<User> list, String name) { //ελεγχος για το αν υπαρχει εγγεγραμένος χρήστης
@@ -96,8 +85,6 @@ public class AuthService {
         }
         return false;
     }
-
-
     public ArrayList<User> getUsers() { //μετατροπή απο json αρχειο σε arraylist
         try {
             Reader reader = Files.newBufferedReader(Paths.get(usersFile.getPath()));
@@ -112,7 +99,6 @@ public class AuthService {
         ArrayList<User> temp = new ArrayList<>();
         return temp;
     }
-
 
     public void updateUsers(List<User> appusers) { //ανανέωση του αρχείου
         try {

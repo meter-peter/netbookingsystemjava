@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Date;
 
-public class Main {
+public class MainWindow {
     String username;
     JFrame jFrame;
     JPanel content;
@@ -21,7 +21,7 @@ public class Main {
     DatePicker datePickerFrom;
     DatePicker datePickerTo;
 
-    public Main(String user, FrontendManager frontendManager){
+    public MainWindow(String user, FrontendManager frontendManager){
         this.username=user;
         this.frontendManager=frontendManager;
         jFrame=new JFrame("Siva");
@@ -32,16 +32,16 @@ public class Main {
         options = new JPanel();
 
         JLabel from = new JLabel("Από");
-        datePickerFrom = new DatePicker();
+//        datePickerFrom = new DatePicker();
         JLabel to = new JLabel("Μέχρι");
-        datePickerTo = new DatePicker();
+//        datePickerTo = new DatePicker();
         type = new JComboBox<>();
 
         options.add(type);
         options.add(from);
-        options.add
-        options.addC(datePickerFrom);
-        options.add(datePickerTo);
+        //options.add
+       // options.addC(datePickerFrom);
+       // options.add(datePickerTo);
 
         type.addItem(EventType.CINEMA.getType());
         type.addItem(EventType.CONCERT.getType());
@@ -55,6 +55,11 @@ public class Main {
         content.add(jSplitPane);
         jSplitPane.setRightComponent(options);
         jSplitPane.setLeftComponent(eventJList);
+        content.setSize(1024,768);
+        content.setVisible(true);
+        jSplitPane.setVisible(true);
+        jFrame.setSize(1024,768);
+        jFrame.setVisible(true);
 
 
     }
