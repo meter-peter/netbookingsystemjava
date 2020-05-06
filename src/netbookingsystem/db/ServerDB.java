@@ -72,14 +72,16 @@ public class ServerDB {
                     case WRITE:
                         switch (type) {
                             case EVENT:
-                                if (serverDB.writeEvent(protocol.getEvent())) {
+                                System.out.println("Event");
+                                if (serverDB.writeEvents(protocol.getEvents())) {
                                     response.setAction(action);
                                     response.setType(type);
                                     response.setStatus(newStatus);
                                     serverDB.getOut().writeObject(response);
                                 }
                             case TICKET:
-                                if (serverDB.writeTicket(protocol.getTicket())) {
+                                System.out.println("Ticket");
+                                if (serverDB.writeTickets(protocol.getTickets())) {
                                     response.setAction(action);
                                     response.setType(type);
                                     response.setStatus(newStatus);
@@ -104,9 +106,9 @@ public class ServerDB {
         return events;
     }
     //write new event
-    public boolean writeEvent (Event event) throws IOException, ClassNotFoundException {
+    public boolean writeEvents (ArrayList<Event> events) throws IOException, ClassNotFoundException {
         FileIO fileIO = new FileIO(pathToEventsFile);
-        if (fileIO.writeEventToFile(event)) {
+        if (fileIO.writeEventsToFile(events)) {
             return true;
         }
         else {
@@ -121,9 +123,9 @@ public class ServerDB {
         return tickets;
     }
     //write new ticket
-    public boolean writeTicket (Ticket ticket) throws IOException, ClassNotFoundException {
+    public boolean writeTickets (ArrayList<Ticket> tickets) throws IOException, ClassNotFoundException {
         FileIO fileIO = new FileIO(pathToTicketsFile);
-        if (fileIO.writeTicketToFile(ticket)) {
+        if (fileIO.writeTicketsToFile(tickets)) {
             return true;
         }
         else {

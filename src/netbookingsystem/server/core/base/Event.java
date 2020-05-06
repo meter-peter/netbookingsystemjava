@@ -3,6 +3,7 @@ package netbookingsystem.server.core.base;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 
 public class Event  implements Serializable {
@@ -11,12 +12,14 @@ public class Event  implements Serializable {
     private String type;
     private EventType eventType;
     private ArrayList<Show> shows;
+    private String id;
 
     public Event (String title, String type, ArrayList<Show> shows) {
         this.title = title;
         this.type = type;
         this.eventType = EventType.valueOf(type);
         this.shows = shows;
+        this.id = UUID.randomUUID().toString();
     }
 
     public static void main (String args[]) {
@@ -43,5 +46,8 @@ public class Event  implements Serializable {
     public ArrayList<Show> getShows() {
         return shows;
     }
+
+    public String getId() { return id; }
+
 }
 

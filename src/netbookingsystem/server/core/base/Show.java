@@ -2,17 +2,20 @@ package netbookingsystem.server.core.base;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 public class Show implements Serializable {
 
     private Date dayStart;
     private int availSeats;
     private double ticketPrice;
+    private String id;
 
     public Show (Date dayStart, int availSeats, double ticketPrice) {
         this.dayStart = dayStart;
         this.availSeats = availSeats;
         this.ticketPrice = ticketPrice;
+        this.id = UUID.randomUUID().toString();
     }
 
     public Date getDayStart() {
@@ -38,4 +41,8 @@ public class Show implements Serializable {
     public void setTicketPrice(double ticketPrice) {
         this.ticketPrice = ticketPrice;
     }
+
+    public String getId() { return id; }
+
+    public void setId(String id) { this.id = id; }
 }

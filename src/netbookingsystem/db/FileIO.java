@@ -16,10 +16,11 @@ public class FileIO {
         this.file = new File(this.pathToFile);
     }
 
-    public boolean writeEventToFile (Event event) throws IOException, ClassNotFoundException {
+    public boolean writeEventsToFile (ArrayList<Event> events) throws IOException, ClassNotFoundException {
         try {
-            ArrayList<Event> events = readEventsFromFile();
-            events.add(event);
+            if (!file.exists()) {
+                ArrayList<Event> eventsToConcet = readEventsFromFile();//debug
+            }
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
             out.writeObject(events);
             out.flush();
@@ -45,10 +46,11 @@ public class FileIO {
         }
     }
 
-    public boolean writeTicketToFile (Ticket ticket) {
+    public boolean writeTicketsToFile (ArrayList<Ticket> tickets) {
         try {
-            ArrayList<Ticket> tickets = readTicketsFromFile();
-            tickets.add(ticket);
+            if (!file.exists()) {
+                file.getParentFile().mkdirs();
+            }
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
             out.writeObject(tickets);
             out.flush();

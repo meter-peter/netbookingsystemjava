@@ -1,6 +1,7 @@
 package netbookingsystem.server.core.base;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Ticket implements Serializable {
 
@@ -10,6 +11,7 @@ public class Ticket implements Serializable {
     private String type;
     private Show show;
     private double priceSum;
+    private String id;
 
     public Ticket (String ticketHolder, int seats, String title, String type, Show show) {
         this.ticketHolder = ticketHolder;
@@ -17,6 +19,7 @@ public class Ticket implements Serializable {
         this.title = title;
         this.type = type;
         this.show = show;
+        this.id = UUID.randomUUID().toString();
     }
 
     public double getTicketPrice () {
@@ -70,4 +73,6 @@ public class Ticket implements Serializable {
     public void setPriceSum(double priceSum) {
         this.priceSum = priceSum;
     }
+
+    public String getId() { return id; }
 }
