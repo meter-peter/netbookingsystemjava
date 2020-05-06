@@ -2,6 +2,7 @@ package netbookingsystem.server.netdriver;
 
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.base.Ticket;
 
 import java.io.*;
 import java.net.Socket;
@@ -41,7 +42,7 @@ public class DBSocket {
         protocol.setStatus(Status.GET);
         setToSend(protocol);//set protocol to send
         getOut().writeObject(getToSend()); //send to db
-        Protocol receive = (Protocol) getIn().readObject();
+        Protocol receive = (Protocol) getIn().readObject();//receive response from db
         setToReceive(receive);
         if (getToReceive().getStatus() == Status.POST) {
             return getToReceive().getEvents();
@@ -68,6 +69,42 @@ public class DBSocket {
        else {
            return false;
        }
+    }
+
+    public ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
+        Protocol protocol = new Protocol(); //protocol to send //set parameters
+        protocol.setAction(Action.READ);
+        protocol.setType(Type.TICKET);
+        protocol.setStatus(Status.GET);
+        setToSend(protocol);//set protocol to send
+        getOut().writeObject(getToSend()); //send to db
+        Protocol receive = (Protocol) getIn().readObject();//receive response from db
+        setToReceive(receive);
+        if (getToReceive().getStatus() == Status.POST) {
+            return getToReceive().getTickets();
+        }
+        else {
+            System.out.println("Error");
+            return null;
+        }
+    }
+
+    public boolean writeTicketsToDB (ArrayList<Ticket> tickets) throws IOException, ClassNotFoundException {
+        Protocol protocol = new Protocol();
+        protocol.setAction(Action.WRITE);
+        protocol.setType(Type.TICKET);
+        protocol.setStatus(Status.GET);
+        protocol.setTickets(tickets);
+        setToSend(protocol);
+        getOut().writeObject(getToSend());
+        Protocol receive = (Protocol) getIn().readObject();
+        setToReceive(receive);
+        if (getToReceive().getStatus() == Status.POST) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     //getter && setter
