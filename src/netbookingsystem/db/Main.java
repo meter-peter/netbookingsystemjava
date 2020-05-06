@@ -29,7 +29,7 @@ public class Main{
         dbSocket.closeConnection();
 //        FileIO fileIO = new FileIO("src/netbookingsystem/db/events.dat");
 //        ArrayList<Event> eventss = fileIO.readEventsFromFile();
-        System.out.println(events1.get(0).getTitle());
+        //System.out.println(events1.get(0).getTitle());
     }
 
 }
