@@ -6,6 +6,7 @@ import netbookingsystem.server.core.base.EventType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 
 public class Main {
     String username;
@@ -17,7 +18,8 @@ public class Main {
     JPanel options;
     JComboBox<String> type;
     FrontendManager frontendManager;
-    DatePicker datePicker;
+    DatePicker datePickerFrom;
+    DatePicker datePickerTo;
 
     public Main(String user, FrontendManager frontendManager){
         this.username=user;
@@ -29,10 +31,18 @@ public class Main {
         eventJList = new JList<>();
         options = new JPanel();
 
-        datePicker = new DatePicker();
-        datePicker.get
-
+        JLabel from = new JLabel("Από");
+        datePickerFrom = new DatePicker();
+        JLabel to = new JLabel("Μέχρι");
+        datePickerTo = new DatePicker();
         type = new JComboBox<>();
+
+        options.add(type);
+        options.add(from);
+        options.add
+        options.addC(datePickerFrom);
+        options.add(datePickerTo);
+
         type.addItem(EventType.CINEMA.getType());
         type.addItem(EventType.CONCERT.getType());
         type.addItem(EventType.PARTY.getType());
