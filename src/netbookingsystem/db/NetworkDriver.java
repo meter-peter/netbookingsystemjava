@@ -39,7 +39,6 @@ public class NetworkDriver {
         }
     }
 
-
     public void acceptpacket() throws IOException, ClassNotFoundException {
         while (true) {
             Object ob =getIn().readObject();
@@ -51,11 +50,6 @@ public class NetworkDriver {
         }
     }
 
-
-    public void closeConnention () throws IOException {
-        getSocket().close();
-    }
-
     public void initStreams () throws IOException {
         this.outputStream = this.socket.getOutputStream();
         this.out = new ObjectOutputStream(this.outputStream);
@@ -63,51 +57,11 @@ public class NetworkDriver {
         this.in = new ObjectInputStream(this.inputStream);
     }
 
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public void setServerSocket(ServerSocket serverSocket) {
-        this.serverSocket = serverSocket;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
-
-    public OutputStream getOutputStream() {
-        return outputStream;
-    }
-
-    public void setOutputStream(OutputStream outputStream) {
-        this.outputStream = outputStream;
-    }
-
     public ObjectOutputStream getOut() {
         return out;
     }
-
-    public void setOut(ObjectOutputStream out) {
-        this.out = out;
-    }
-
-    public InputStream getInputStream() {
-        return inputStream;
-    }
-
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
-    }
-
     public ObjectInputStream getIn() {
         return in;
     }
 
-    public void setIn(ObjectInputStream in) {
-        this.in = in;
-    }
 }
