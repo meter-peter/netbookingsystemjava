@@ -14,8 +14,7 @@ public class RMI {
             initRMI();
 
         }
-
-       public void initRMI(){
+        public void initRMI(){
            try {
                Registry registry = LocateRegistry.getRegistry(5555);
 
@@ -28,12 +27,10 @@ public class RMI {
 
         }
 
-
         public AuthStatus login(String username , String password) throws Exception {
            return stub.login(username, password);
 
         }
-
         public AuthStatus register(String username, String password, String email , String firstname , String lastname) throws Exception {
             return stub.register(username,password,email,firstname,lastname);
 

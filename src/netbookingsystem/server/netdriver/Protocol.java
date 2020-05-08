@@ -5,53 +5,59 @@ import netbookingsystem.server.core.base.Ticket;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Protocol implements Serializable {
+    ArrayList<String> params;
+    ArrayList<Ticket> tickets;
+    ArrayList<Event> events;
+    Event event;
+    Ticket ticket;
 
-    private ArrayList<Event> events;
-    private ArrayList<Ticket> tickets;
-    private Action action;
-    private Type type;
-    private Status status;
+    //ADD TICKET
+    //DELETE TICKET
+    //UPDATE TICKET
+    //GET TICKET(S)
 
+    //TO IDIO ME TA SHOWS
 
-    public ArrayList<Ticket> getTickets() {
-        return tickets;
+    public Protocol(ArrayList<String> params) {
+        this.params = params;
     }
 
-    public void setTickets(ArrayList<Ticket> tickets) {
+    public void setToSendevents(ArrayList events) {
+        this.events = events;
+    }
+
+    public void setToSendTickets(ArrayList<Ticket> arrayList) {
         this.tickets = tickets;
     }
 
-    public Type getType() {
-        return type;
+    public void setToSendTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setToSendEvent(Event event) {
+        this.event = event;
     }
 
-    public Status getStatus() {
-        return status;
+    public ArrayList<String> getParams() {
+        return params;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public ArrayList<Ticket> getTickets() {
+        return tickets;
     }
 
     public ArrayList<Event> getEvents() {
         return events;
     }
 
-    public void setEvents(ArrayList<Event> events) {
-        this.events = events;
+    public Event getEvent() {
+        return event;
     }
 
-    public Action getAction() {
-        return action;
-    }
-
-    public void setAction(Action action) {
-        this.action = action;
+    public Ticket getTicket() {
+        return ticket;
     }
 }

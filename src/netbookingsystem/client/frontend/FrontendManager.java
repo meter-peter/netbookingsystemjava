@@ -2,19 +2,25 @@ package netbookingsystem.client.frontend;
 
 import netbookingsystem.client.functions.RMI;
 import netbookingsystem.server.auth.AuthStatus;
+import netbookingsystem.server.core.base.Event;
+
+import java.util.ArrayList;
 
 public class FrontendManager {
 
     RMI rmi;
     MainWindow mainWindow;
     LoginRegister loginRegister;
+    ArrayList<Event> events;
+
+    public void setEvents(ArrayList<Event> events) {
+        this.events = events;
+    }
 
     public FrontendManager(RMI rmi){
         this.rmi=rmi;
+        events=new ArrayList<>();
         loginRegister = new LoginRegister(this);
-
-
-
 
 
     }

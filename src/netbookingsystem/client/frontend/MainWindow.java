@@ -6,6 +6,7 @@ import netbookingsystem.server.core.base.EventType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainWindow {
@@ -18,6 +19,7 @@ public class MainWindow {
     JPanel options;
     JComboBox<String> type;
     FrontendManager frontendManager;
+    ArrayList<Event> eventArrayList;
     //DatePicker datePickerFrom;
     //DatePicker datePickerTo;
 

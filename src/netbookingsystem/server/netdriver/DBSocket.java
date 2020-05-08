@@ -25,7 +25,7 @@ public class DBSocket {
     }
 
     public void initSocket () throws IOException {
-        socket = new Socket("localhost", 5555);
+        socket = new Socket("localhost", 8888);
     }
 
     public void initStreams () throws IOException {
@@ -34,79 +34,6 @@ public class DBSocket {
         inputStream = socket.getInputStream();
         in = new ObjectInputStream(inputStream);
     }
-
-    public ArrayList<Event> getEventsFromDB () throws IOException, ClassNotFoundException {
-        Protocol protocol = new Protocol(); //protocol to send //set parameters
-        protocol.setAction(Action.READ);
-        protocol.setType(Type.EVENT);
-        protocol.setStatus(Status.GET);
-        setToSend(protocol);//set protocol to send
-        getOut().writeObject(getToSend()); //send to db
-        Protocol receive = (Protocol) getIn().readObject();//receive response from db
-        setToReceive(receive);
-        if (getToReceive().getStatus() == Status.POST) {
-            return getToReceive().getEvents();
-        }
-        else {
-            System.out.println("Error");
-            return null;
-        }
-    }
-
-    public boolean writeEventsToDB (ArrayList<Event> events) throws IOException, ClassNotFoundException {
-       Protocol protocol = new Protocol();
-       protocol.setAction(Action.WRITE);
-       protocol.setType(Type.EVENT);
-       protocol.setStatus(Status.GET);
-       protocol.setEvents(events);
-       setToSend(protocol);
-       getOut().writeObject(getToSend());
-       Protocol receive = (Protocol) getIn().readObject();
-       setToReceive(receive);
-       if (getToReceive().getStatus() == Status.POST) {
-           return true;
-       }
-       else {
-           return false;
-       }
-    }
-
-    public ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
-        Protocol protocol = new Protocol(); //protocol to send //set parameters
-        protocol.setAction(Action.READ);
-        protocol.setType(Type.TICKET);
-        protocol.setStatus(Status.GET);
-        setToSend(protocol);//set protocol to send
-        getOut().writeObject(getToSend()); //send to db
-        Protocol receive = (Protocol) getIn().readObject();//receive response from db
-        setToReceive(receive);
-        if (getToReceive().getStatus() == Status.POST) {
-            return getToReceive().getTickets();
-        }
-        else {
-            System.out.println("Error");
-            return null;
-        }
-    }
-
-    public boolean writeTicketsToDB (ArrayList<Ticket> tickets) throws IOException, ClassNotFoundException {
-        Protocol protocol = new Protocol();
-        protocol.setAction(Action.WRITE);
-        protocol.setType(Type.TICKET);
-        protocol.setStatus(Status.GET);
-        protocol.setTickets(tickets);
-        setToSend(protocol);
-        getOut().writeObject(getToSend());
-        Protocol receive = (Protocol) getIn().readObject();
-        setToReceive(receive);
-        if (getToReceive().getStatus() == Status.POST) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     //getter && setter
     public void closeConnection () throws IOException {
         socket.close();
