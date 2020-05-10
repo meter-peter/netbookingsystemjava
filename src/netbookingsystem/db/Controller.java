@@ -1,13 +1,17 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.EventType;
+import netbookingsystem.server.core.base.Show;
 import netbookingsystem.server.core.base.Ticket;
 import netbookingsystem.server.netdriver.Protocol;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Controller {
+public class Controller extends Thread{
 
     FileIO fileIO;
     NetworkDriver networkDriver;
@@ -16,6 +20,7 @@ public class Controller {
 
 
     public Controller() throws IOException, ClassNotFoundException {
+        this.start();
         fileIO = new FileIO();
         serverEvents = fileIO.readEventsFromFile();
         generatedTickets = fileIO.readTicketsFromFile();
@@ -79,8 +84,18 @@ public class Controller {
         ArrayList<String> params = new ArrayList<>();
         params.add("RETURN");
         Protocol response = new Protocol(params);
-        response.setToSendevents(serverEvents);
-        networkDriver.getOut().writeObject(response);
+
+        System.out.println(serverEvents);
+
+        ArrayList<Event> tempe= new ArrayList<>();
+        ArrayList<Show> temps = new ArrayList<>();
+        temps.add(new Show(Date.from(Instant.now()),100,25.50));
+        tempe.add(new Event("Η Αλικη","PARTY",temps));
+        response.setToSendevents(tempe);
+        System.out.println(networkDriver);
+        networkDriver.send(response);
+
+
     }
 
 

@@ -49,5 +49,11 @@ public class Event  implements Serializable {
 
     public String getId() { return id; }
 
+    @Override
+    public String toString(){
+        String s = getTitle()+"  |  "+"Σε "+shows.size()+" Παραστάσεις";
+        return s;
+    }
+
 }
 

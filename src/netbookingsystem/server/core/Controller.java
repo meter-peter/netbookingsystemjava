@@ -20,21 +20,25 @@ public class Controller {
     ArrayList<Ticket> liveTickets;
     RmiDriver rmiDriver;
 
-    public Controller() throws IOException {
+
+    public Controller() throws IOException, ClassNotFoundException {
         dbSocket = new DBSocket();
         dbFunctions = new DBFunctions(dbSocket);
         authService = new AuthService(this);
-        remoteFunctions = new ClientFunctions(authService);
+        remoteFunctions = new ClientFunctions(authService ,this);
         rmiDriver = new RmiDriver(remoteFunctions);
+        syncData();
+
+
 
     }
 
     public synchronized void syncData() throws IOException, ClassNotFoundException {
         liveEvents=dbFunctions.getEventsFromDB();
         liveTickets=dbFunctions.getTicketsFromDB();
-
-
     }
 
-
-}
+    public synchronized ArrayList<Event> getEvents(){
+        return liveEvents;
+    }
+    }

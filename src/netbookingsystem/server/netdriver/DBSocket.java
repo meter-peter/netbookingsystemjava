@@ -29,10 +29,11 @@ public class DBSocket {
     }
 
     public void initStreams () throws IOException {
-        outputStream = socket.getOutputStream();
-        out = new ObjectOutputStream(outputStream);
+
         inputStream = socket.getInputStream();
         in = new ObjectInputStream(inputStream);
+        outputStream = socket.getOutputStream();
+        out = new ObjectOutputStream(outputStream);
     }
     //getter && setter
     public void closeConnection () throws IOException {

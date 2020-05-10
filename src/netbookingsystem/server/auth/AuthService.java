@@ -47,7 +47,7 @@ public class AuthService {
                 if (tobesearched.getPassword().equals(password)) {
                     System.out.println("SUCCESS");
                     toAuth = tobesearched;
-                    controller.continuewithlogin(toAuth);
+                  //  controller.continuewithlogin(toAuth);
 
                     flag = true;
                     return AuthStatus.SUCCESS;

@@ -2,10 +2,13 @@ package netbookingsystem.client.functions;
 
 import netbookingsystem.ClientInterface;
 import netbookingsystem.server.auth.AuthStatus;
+import netbookingsystem.server.core.base.Event;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 public class RMI {
     ClientInterface stub;
@@ -35,7 +38,11 @@ public class RMI {
             return stub.register(username,password,email,firstname,lastname);
 
         }
-    }
+
+        public ArrayList<Event> getAvailableEvents() throws RemoteException {
+            return stub.getAvailableEvents();
+        }
+}
 
 
 

@@ -19,10 +19,12 @@ public class NetworkDriver {
 
     public NetworkDriver(Controller controller) throws IOException, ClassNotFoundException {
         this.controller = controller;
-
         initSockets();
-        System.out.println("A Client Has been coneected");
         initStreams();
+        System.out.println("A Client Has been coneected");
+        while(true){
+            acceptpacket();
+        }
 
     }
 
@@ -33,10 +35,10 @@ public class NetworkDriver {
 
 
     }
-    public void run() throws IOException, ClassNotFoundException {
-        while (socket.isConnected()){
-            acceptpacket();
-        }
+
+
+    public void send(Protocol protocol) throws IOException {
+        getOut().writeObject(protocol);
     }
 
     public void acceptpacket() throws IOException, ClassNotFoundException {

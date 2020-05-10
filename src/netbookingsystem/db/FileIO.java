@@ -1,10 +1,15 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.EventType;
+import netbookingsystem.server.core.base.Show;
 import netbookingsystem.server.core.base.Ticket;
 
 import java.io.*;
+import java.sql.Time;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FileIO {
 
@@ -38,11 +43,14 @@ public class FileIO {
         if (!fileevents.exists()) {
             fileevents.getParentFile().mkdirs();
             return events;
-        }
-        else {
+        } else {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileevents));
             events = (ArrayList<Event>) in.readObject();
-            return events;
+            if (events == null) {
+                return new ArrayList<>();
+            } else {
+                return events;
+            }
         }
     }
 

@@ -4,6 +4,7 @@ import netbookingsystem.client.functions.RMI;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class FrontendManager {
@@ -26,9 +27,18 @@ public class FrontendManager {
     }
 
 
+
+    public void syncGUIevents(){
+        mainWindow.getDefaultListModel().clear();
+        mainWindow.getDefaultListModel().addAll(events);
+
+        }
+
+
     private void onAuth(String username){
         mainWindow = new MainWindow(username , this);
         loginRegister.dispose();
+
 
 
     }
@@ -45,5 +55,9 @@ public class FrontendManager {
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
         return status;
+    }
+
+    public void syncData() throws RemoteException {
+        this.events = rmi.getAvailableEvents();
     }
 }

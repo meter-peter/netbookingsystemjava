@@ -7,6 +7,8 @@ public class Controller {
         RMI rmi = new RMI();
         FrontendManager frontendManager = new FrontendManager(rmi);
 
+
     }
+
 
 }

@@ -66,7 +66,11 @@ public class MainWindow {
 
     }
 
+    public JList<Event> getEventJList() {
+        return eventJList;
+    }
 
-
-
+    public DefaultListModel getDefaultListModel() {
+        return defaultListModel;
+    }
 }
