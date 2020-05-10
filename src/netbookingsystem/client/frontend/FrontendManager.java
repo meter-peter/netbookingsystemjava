@@ -26,18 +26,21 @@ public class FrontendManager {
 
     }
 
-
+    public ArrayList<Event> getEvents() {
+        return events;
+    }
 
     public void syncGUIevents(){
-        mainWindow.getDefaultListModel().clear();
-        mainWindow.getDefaultListModel().addAll(events);
+       mainWindow.updatelist(events);
 
         }
 
 
-    private void onAuth(String username){
-        mainWindow = new MainWindow(username , this);
+    private void onAuth(String username) throws RemoteException {
+        syncData();
         loginRegister.dispose();
+        mainWindow = new MainWindow(username , this);
+        syncGUIevents();
 
 
 
@@ -59,5 +62,6 @@ public class FrontendManager {
 
     public void syncData() throws RemoteException {
         this.events = rmi.getAvailableEvents();
+        System.out.println(events);
     }
 }

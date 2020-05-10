@@ -25,7 +25,18 @@ public class Controller extends Thread{
         serverEvents = fileIO.readEventsFromFile();
         generatedTickets = fileIO.readTicketsFromFile();
         networkDriver = new NetworkDriver(this);
+        while (true) {
+            acceptpacket();
+        }
+    }
 
+    public void acceptpacket() throws IOException, ClassNotFoundException {
+        Object ob =networkDriver.getIn().readObject();
+        System.out.println("pernaei!");
+        if (ob instanceof Protocol) {
+            Protocol protocol = (Protocol) ob;
+           driveFunction(protocol);
+        }
     }
 
     //deserialize and call functions

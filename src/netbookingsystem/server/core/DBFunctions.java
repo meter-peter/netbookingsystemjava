@@ -16,7 +16,7 @@ public class DBFunctions {
 
 
 
-    public synchronized ArrayList<Event> getEventsFromDB () throws IOException, ClassNotFoundException {
+    public  ArrayList<Event> getEventsFromDB () throws IOException, ClassNotFoundException {
        ArrayList<String> params = new ArrayList<>();
        params.add("GET");
        params.add("EVENTS");

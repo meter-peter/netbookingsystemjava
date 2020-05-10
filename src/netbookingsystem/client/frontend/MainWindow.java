@@ -6,6 +6,8 @@ import netbookingsystem.server.core.base.EventType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,6 +22,7 @@ public class MainWindow {
     JComboBox<String> type;
     FrontendManager frontendManager;
     ArrayList<Event> eventArrayList;
+    Event selectedEvent;
     //DatePicker datePickerFrom;
     //DatePicker datePickerTo;
 
@@ -30,7 +33,7 @@ public class MainWindow {
         content=new JPanel();
         jSplitPane = new JSplitPane();
         defaultListModel = new DefaultListModel();
-        eventJList = new JList<>();
+        eventJList = new JList<>(defaultListModel);
         options = new JPanel();
 
         JLabel from = new JLabel("Από");
@@ -56,7 +59,7 @@ public class MainWindow {
         jFrame.add(content);
         content.add(jSplitPane);
         jSplitPane.setRightComponent(options);
-        jSplitPane.setLeftComponent(eventJList);
+        jSplitPane.setLeftComponent(new JScrollPane(eventJList));
         content.setSize(1024,768);
         content.setVisible(true);
         jSplitPane.setVisible(true);
@@ -64,13 +67,32 @@ public class MainWindow {
         jFrame.setVisible(true);
 
 
+        type.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                updatelist(frontendManager.getEvents());
+            }
+        });
+
     }
 
     public JList<Event> getEventJList() {
         return eventJList;
     }
 
-    public DefaultListModel getDefaultListModel() {
-        return defaultListModel;
+    public void updatelist(ArrayList<Event> list){
+        eventArrayList=list;
+        System.out.println(eventArrayList);
+        defaultListModel.clear();
+        int x =0 ;
+        for(int i=0;i<list.size();i++){
+            if(eventArrayList.get(i).getEventType().getType().equals(type.getSelectedItem())){
+                defaultListModel.add(x,eventArrayList.get(i));
+                x++;
+            }
+        }
+        eventJList.getSelectionModel().addListSelectionListener(e -> {
+            selectedEvent =eventJList.getSelectedValue();
+        });
     }
 }

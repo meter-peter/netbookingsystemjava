@@ -20,45 +20,23 @@ public class NetworkDriver {
     public NetworkDriver(Controller controller) throws IOException, ClassNotFoundException {
         this.controller = controller;
         initSockets();
-        initStreams();
         System.out.println("A Client Has been coneected");
-        while(true){
-            acceptpacket();
-        }
-
     }
 
     public void initSockets() throws IOException, ClassNotFoundException {
         this.serverSocket = new ServerSocket(8888);
         this.socket =serverSocket.accept();
         System.out.println("W8ing 4 connection");
+        outputStream = socket.getOutputStream();
+        inputStream = socket.getInputStream();
+        out = new ObjectOutputStream(outputStream);
+        in = new ObjectInputStream(inputStream);
 
 
     }
-
-
     public void send(Protocol protocol) throws IOException {
         getOut().writeObject(protocol);
     }
-
-    public void acceptpacket() throws IOException, ClassNotFoundException {
-        while (true) {
-            Object ob =getIn().readObject();
-            System.out.println("pernaei!");
-            if (ob instanceof Protocol) {
-                Protocol protocol = (Protocol) ob;
-                controller.driveFunction(protocol);
-            }
-        }
-    }
-
-    public void initStreams () throws IOException {
-        this.outputStream = this.socket.getOutputStream();
-        this.out = new ObjectOutputStream(this.outputStream);
-        this.inputStream = this.socket.getInputStream();
-        this.in = new ObjectInputStream(this.inputStream);
-    }
-
     public ObjectOutputStream getOut() {
         return out;
     }
