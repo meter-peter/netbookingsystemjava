@@ -23,18 +23,31 @@ public class MainWindow {
     FrontendManager frontendManager;
     ArrayList<Event> eventArrayList;
     Event selectedEvent;
+    Button button ;
+    MainWindow clone;
     //DatePicker datePickerFrom;
     //DatePicker datePickerTo;
 
     public MainWindow(String user, FrontendManager frontendManager){
         this.username=user;
         this.frontendManager=frontendManager;
+        clone=this;
         jFrame=new JFrame("Siva");
         content=new JPanel();
         jSplitPane = new JSplitPane();
         defaultListModel = new DefaultListModel();
         eventJList = new JList<>(defaultListModel);
         options = new JPanel();
+        button = new Button("Find Tickets");
+        options.add(button);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(selectedEvent!=null){
+                    System.out.println(selectedEvent.getTitle());
+                new BookingSection(selectedEvent,frontendManager,clone);
+            }}
+        });
 
         JLabel from = new JLabel("Από");
 //        datePickerFrom = new DatePicker();
@@ -43,7 +56,7 @@ public class MainWindow {
         type = new JComboBox<>();
 
         options.add(type);
-        options.add(from);
+        options.add(from);options.add(to);
         //options.add
        // options.addC(datePickerFrom);
        // options.add(datePickerTo);
@@ -56,7 +69,7 @@ public class MainWindow {
 
 
 
-        jFrame.add(content);
+        jFrame.setContentPane(content);
         content.add(jSplitPane);
         jSplitPane.setRightComponent(options);
         jSplitPane.setLeftComponent(new JScrollPane(eventJList));
@@ -93,7 +106,6 @@ public class MainWindow {
         }
         eventJList.getSelectionModel().addListSelectionListener(e -> {
             selectedEvent =eventJList.getSelectedValue();
-            new BookingSection(selectedEvent,frontendManager);
         });
     }
 }

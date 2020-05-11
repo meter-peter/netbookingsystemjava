@@ -13,7 +13,8 @@ public interface ClientInterface extends Remote {
     public AuthStatus login(String username, String password) throws Exception;
     public AuthStatus register(String username, String password , String email , String firstname, String lastname) throws Exception;
     public ArrayList<Event> getAvailableEvents() throws RemoteException;
-    public double book(String username , Event event, Show show , int seats) throws Exception;
+    public void book(String username , Event event, Show show , int seats) throws Exception;
+    public void addEvent(Event event) throws Exception;
 
 
 }

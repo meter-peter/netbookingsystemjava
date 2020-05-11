@@ -19,13 +19,19 @@ public class BookingSection {
     JList<Show> shows;
     Show selected;
     JButton bookbutton;
+    MainWindow mainWindow;
+    BookingSection clone;
 
 
 
 
 
-    public BookingSection(Event event ,FrontendManager frontendManager){
+    public BookingSection(Event event ,FrontendManager frontendManager, MainWindow mainWindow){
+        JFrame jframe = new JFrame("Almost Ready");
+        jframe.setSize(800,600);
         this.event=event;
+        this.mainWindow =mainWindow;
+        clone=this;
         jPanel = new JPanel();
         eventTitle = new JLabel(event.getTitle());
         defaultListModel = new DefaultListModel();
@@ -35,6 +41,11 @@ public class BookingSection {
         jPanel.add(shows);
         defaultListModel.addAll(event.getShows());
         seats= new JComboBox<>();
+        JLabel seatslabel= new JLabel("Seats");
+        jPanel.add(seatslabel);
+        jPanel.add(seats);
+        jPanel.add(bookbutton);
+
 
         shows.getSelectionModel().addListSelectionListener(e -> {
             selected = shows.getSelectedValue();
@@ -44,17 +55,24 @@ public class BookingSection {
 
         });
 
+        jframe.setLocationRelativeTo(null);
+        jframe.add(jPanel);
+        jframe.pack();
+        jframe.setVisible(true);
+
         bookbutton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    frontendManager.book(event,selected,(Integer)seats.getSelectedItem());
+                    new PaymentPanel(frontendManager,clone);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
-
+jPanel.setSize(800,600);
+jPanel.setVisible(true);
 
 
     }

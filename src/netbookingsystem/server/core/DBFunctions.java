@@ -29,13 +29,14 @@ public class DBFunctions {
 
 
 
-    public synchronized ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
+    public ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
         ArrayList<String> params = new ArrayList<>();
         params.add("GET");
         params.add("TICKETS");
         Protocol protocol = new Protocol(params);
         dbSocket.getOut().writeObject(protocol);
         Protocol response = (Protocol) dbSocket.getIn().readObject();
+        System.out.println("DBFUNCTIONS"+response.getTickets());
         return response.getTickets();
     }
 
@@ -52,6 +53,8 @@ public class DBFunctions {
    public void deleteEvent(){
 
    }
+
+
 
    public void addTicket(Ticket ticket) throws IOException {
         ArrayList<String> params = new ArrayList<>();

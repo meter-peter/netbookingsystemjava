@@ -30,7 +30,7 @@ public class Protocol implements Serializable {
     }
 
     public void setToSendTickets(ArrayList<Ticket> arrayList) {
-        this.tickets = tickets;
+        this.tickets = arrayList;
     }
 
     public void setToSendTicket(Ticket ticket) {

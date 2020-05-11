@@ -39,8 +39,13 @@ public class ClientFunctions implements ClientInterface {
 
     }
 
-    public double book(String username , Event event, Show show , int seats) throws IOException {
-        return controller.book(username, event, show, seats);
+    public void book(String username , Event event, Show show , int seats) throws IOException {
+        controller.book(username, event, show, seats);
     }
 
+    public void addEvent(Event event) throws Exception{
+        controller.addEvent(event);
+
+
+    }
 }

@@ -18,6 +18,7 @@ public class Ticket implements Serializable {
         this.title = title;
         this.show = show;
         this.id = UUID.randomUUID().toString();
+        System.out.println(priceSum);
     }
 
 
@@ -67,4 +68,9 @@ public class Ticket implements Serializable {
     }
 
     public String getId() { return id; }
+    @Override
+    public String toString(){
+    String s=getId().toString()+"::"+getTicketHolder()+"::"+getPriceSum();
+    return s;
+    }
 }

@@ -44,8 +44,12 @@ public class RMI {
             return stub.getAvailableEvents();
         }
 
-        public double book(String username , Event event , Show show , int seats) throws Exception {
-            return stub.book(username,event,show,seats);
+        public void book(String username , Event event , Show show , int seats) throws Exception {
+            stub.book(username,event,show,seats);
+        }
+
+        public void addEvent(Event event) throws Exception {
+            stub.addEvent(event);
         }
 }
 

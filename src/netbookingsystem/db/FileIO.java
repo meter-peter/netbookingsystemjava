@@ -20,8 +20,11 @@ public class FileIO {
 
 
     public FileIO() throws IOException {
+
+
       fileevents = new File(eventsfile);
       filetickets = new File(ticketsfile);
+
     }
 
     public boolean writeEventsToFile (ArrayList<Event> events) throws IOException, ClassNotFoundException {
@@ -38,6 +41,34 @@ public class FileIO {
         }
     }
 
+
+
+    public boolean writeTicketsToFile (ArrayList<Ticket> tickets) throws IOException {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filetickets));
+            out.writeObject(tickets);
+            out.flush();
+            out.close();
+            return true;
+        }
+
+    public ArrayList<Ticket> readTicketsFromFile () throws IOException, ClassNotFoundException {
+        ArrayList<Ticket> tickets = new ArrayList<>();
+        if (!filetickets.exists()) {
+            filetickets.getParentFile().mkdirs();
+            System.out.println("AOYA");
+            return tickets;
+        } else {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(filetickets));
+            tickets = (ArrayList<Ticket>) in.readObject();
+            if(tickets!=null)
+                return tickets;
+
+            else
+                return new ArrayList<>();
+        }
+    }
+
+
     public ArrayList<Event> readEventsFromFile () throws IOException, ClassNotFoundException {
         ArrayList<Event> events = new ArrayList<>();
         if (!fileevents.exists()) {
@@ -51,35 +82,6 @@ public class FileIO {
             } else {
                 return events;
             }
-        }
-    }
-
-    public boolean writeTicketsToFile (ArrayList<Ticket> tickets) {
-        try {
-            if (!filetickets.exists()) {
-                filetickets.getParentFile().mkdirs();
-            }
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filetickets));
-            out.writeObject(tickets);
-            out.flush();
-            out.close();
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    public ArrayList<Ticket> readTicketsFromFile () throws IOException, ClassNotFoundException {
-        ArrayList<Ticket> tickets = new ArrayList<>();
-        if (!filetickets.exists()) {
-            filetickets.getParentFile().mkdirs();
-            return tickets;
-        }
-        else {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(filetickets));
-            tickets = (ArrayList<Ticket>) in.readObject();
-            return tickets;
         }
     }
 

@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Controller{
+public class Controller extends Thread{
 
     FileIO fileIO;
     NetworkDriver networkDriver;
@@ -20,6 +20,7 @@ public class Controller{
 
 
     public Controller() throws IOException, ClassNotFoundException {
+        this.start();
         fileIO = new FileIO();
         serverEvents = fileIO.readEventsFromFile();
         generatedTickets = fileIO.readTicketsFromFile();
@@ -40,7 +41,7 @@ public class Controller{
 
     //deserialize and call functions
     public void driveFunction(Protocol packet) throws IOException, ClassNotFoundException {
-        System.out.println("Driving Function :" + packet.getParams().get(0));
+        System.out.println("Driving Function :" + packet.getParams().get(0) +packet.getParams().get(1));
         switch (packet.getParams().get(0)) {
             case "ADD":
                 if (packet.getParams().get(1).equals("EVENT"))
@@ -53,7 +54,7 @@ public class Controller{
                 if (packet.getParams().get(1).equals("EVENTS")) {
                     returnEvents();
                 } else if (packet.getParams().get(1).equals("TICKETS")) {
-                    readTickets();
+                    returnTickets();
                 }
                 break;
 
@@ -101,6 +102,7 @@ public class Controller{
         ArrayList<Show> temps = new ArrayList<>();
         temps.add(new Show(Date.from(Instant.now()),100,25.50));
         tempe.add(new Event("Η Αλικη","PARTY",temps));
+        serverEvents.addAll(tempe);
         response.setToSendevents(tempe);
         System.out.println(networkDriver);
         updateEvents(serverEvents);
@@ -109,8 +111,13 @@ public class Controller{
 
     }
 
+    public void returnTickets() throws IOException, ClassNotFoundException {
+        ArrayList<String> params = new ArrayList<>();
+        params.add("RETURN");
+        Protocol response = new Protocol(params);
+        response.setToSendTickets(generatedTickets);
+        networkDriver.getOut().writeObject(response);
 
-    public void returnTickets() {
 
     }
 

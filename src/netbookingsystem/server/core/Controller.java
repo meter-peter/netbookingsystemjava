@@ -23,6 +23,8 @@ public class Controller {
 
 
     public Controller() throws IOException, ClassNotFoundException {
+        liveTickets=new ArrayList<>();
+        liveEvents=new ArrayList<>();
         dbSocket = new DBSocket();
         dbFunctions = new DBFunctions(dbSocket);
         authService = new AuthService(this);
@@ -35,35 +37,52 @@ public class Controller {
     }
 
     public  void syncData() throws IOException, ClassNotFoundException {
-        liveEvents=dbFunctions.getEventsFromDB();
-        liveTickets=dbFunctions.getTicketsFromDB();
+        liveEvents.clear();
+        liveEvents.addAll(dbFunctions.getEventsFromDB());
+        liveTickets.clear();
+        liveTickets = dbFunctions.getTicketsFromDB();
+        System.out.println(liveTickets);
     }
 
+    public synchronized ArrayList<Ticket> getLiveTickets(){
+        return liveTickets;
+    }
     public synchronized ArrayList<Event> getEvents(){
         return liveEvents;
     }
 
 
+    public void addEvent(Event event){
+        liveEvents.add(event);
+        dbFunctions.addEvent(event);
+    }
 
 
 
     public double book(String userid , Event event , Show show,int seats) throws IOException {
-        Ticket ticket = null;
-        for(int i=0;i<liveEvents.size();i++){
-            if(event.getId().equals(liveEvents.get(i).getId())){
-                for(int j=0;j<liveEvents.get(i).getShows().size();j++){
-                    if(show.getId().equals(liveEvents.get(i).getShows().get(j))){
-                        liveEvents.get(i).getShows().get(j).bookseats(seats);
-                        ticket = new Ticket(userid,seats,event.getTitle(),show);
-                        liveTickets.add(ticket);
+    System.out.println(userid+event.getTitle()+show.getId()+seats);
+
+        for (int i = 0; i < liveEvents.size(); i++) {
+            if (event.getId().equals(liveEvents.get(i).getId())) {
+                System.out.println(liveEvents.get(i));
+                for (int j = 0; j < liveEvents.get(i).getShows().size(); j++) {
+
+                    if (show.getId().equals(liveEvents.get(i).getShows().get(j).getId())) {
+                        System.out.println("AOUA");
+                        Ticket ticket = new Ticket(userid, seats, event.getTitle(), show);
+                        ticket.setPriceSum(liveEvents.get(i).getShows().get(j).bookseats(seats));
+                        System.out.println(ticket);
+                        getLiveTickets().add(ticket);
                         dbFunctions.addTicket(ticket);
+
+                        return ticket.getPriceSum();
                     }
                 }
 
             }
 
         }
-        return ticket.getPriceSum();
-    }
 
+        return 0.0;
+    }
     }

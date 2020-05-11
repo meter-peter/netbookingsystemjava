@@ -5,8 +5,10 @@ import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
 
+import javax.swing.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FrontendManager {
 
@@ -34,23 +36,19 @@ public class FrontendManager {
 
     public void syncGUIevents(){
        mainWindow.updatelist(events);
+        SwingUtilities.updateComponentTreeUI(mainWindow.jFrame);
 
         }
 
 
-    private void onAuth(String username) throws RemoteException {
+    private void onAuth(String username) throws Exception {
         this.Sessionusername=username;
-
         syncData();
         loginRegister.dispose();
         mainWindow = new MainWindow(username , this);
         syncGUIevents();
 
-
-
     }
-
-
 
     public AuthStatus login(String username, String password) throws Exception {
         AuthStatus status = rmi.login(username, password);
@@ -74,5 +72,9 @@ public class FrontendManager {
 
     public void book(Event event, Show show , int seats) throws Exception {
         rmi.book(Sessionusername,event,show,seats);
+    }
+
+    public void addEvent(Event event) throws Exception {
+        rmi.addEvent(event);
     }
 }
