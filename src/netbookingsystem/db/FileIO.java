@@ -1,27 +1,32 @@
 package netbookingsystem.db;
 
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.EventType;
+import netbookingsystem.server.core.base.Show;
 import netbookingsystem.server.core.base.Ticket;
 
 import java.io.*;
+import java.sql.Time;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FileIO {
 
-    private String pathToFile;
-    private File file;
+    private static final String eventsfile ="databaseFiles/events.dat";
+    private static final String ticketsfile ="databaseFiles/tickets.dat";
+    private File fileevents;
+    private File filetickets;
 
-    public FileIO (String pathToFile) throws IOException {
-        this.pathToFile = pathToFile;
-        this.file = new File(this.pathToFile);
+
+    public FileIO() throws IOException {
+      fileevents = new File(eventsfile);
+      filetickets = new File(ticketsfile);
     }
 
     public boolean writeEventsToFile (ArrayList<Event> events) throws IOException, ClassNotFoundException {
         try {
-            if (!file.exists()) {
-                ArrayList<Event> eventsToConcet = readEventsFromFile();//debug
-            }
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileevents));
             out.writeObject(events);
             out.flush();
             out.close();
@@ -35,23 +40,26 @@ public class FileIO {
 
     public ArrayList<Event> readEventsFromFile () throws IOException, ClassNotFoundException {
         ArrayList<Event> events = new ArrayList<>();
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
+        if (!fileevents.exists()) {
+            fileevents.getParentFile().mkdirs();
             return events;
-        }
-        else {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+        } else {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileevents));
             events = (ArrayList<Event>) in.readObject();
-            return events;
+            if (events == null) {
+                return new ArrayList<>();
+            } else {
+                return events;
+            }
         }
     }
 
     public boolean writeTicketsToFile (ArrayList<Ticket> tickets) {
         try {
-            if (!file.exists()) {
-                file.getParentFile().mkdirs();
+            if (!filetickets.exists()) {
+                filetickets.getParentFile().mkdirs();
             }
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(file));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filetickets));
             out.writeObject(tickets);
             out.flush();
             out.close();
@@ -62,15 +70,14 @@ public class FileIO {
             return false;
         }
     }
-
     public ArrayList<Ticket> readTicketsFromFile () throws IOException, ClassNotFoundException {
         ArrayList<Ticket> tickets = new ArrayList<>();
-        if (!file.exists()) {
-            file.getParentFile().mkdirs();
+        if (!filetickets.exists()) {
+            filetickets.getParentFile().mkdirs();
             return tickets;
         }
         else {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream(file));
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(filetickets));
             tickets = (ArrayList<Ticket>) in.readObject();
             return tickets;
         }
