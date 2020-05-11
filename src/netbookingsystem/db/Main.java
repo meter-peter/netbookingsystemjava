@@ -23,13 +23,7 @@ public class Main{
 //        Ticket ticket = new Ticket("NikosRekkas", 3, event.getTitle(), event.getType(), show);
         ArrayList<Event> events = new ArrayList<>();
         events.add(event);
-        DBSocket dbSocket = new DBSocket();
-        //dbSocket.writeEventsToDB(events);
-        ArrayList<Event> events1 = dbSocket.getEventsFromDB();
-        dbSocket.closeConnection();
-//        FileIO fileIO = new FileIO("src/netbookingsystem/db/events.dat");
-//        ArrayList<Event> eventss = fileIO.readEventsFromFile();
-        System.out.println(events1.get(0).getTitle());
+
     }
 
 }
