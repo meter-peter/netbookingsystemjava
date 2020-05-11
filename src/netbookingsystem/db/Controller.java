@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Controller extends Thread{
+public class Controller{
 
     FileIO fileIO;
     NetworkDriver networkDriver;
@@ -20,7 +20,6 @@ public class Controller extends Thread{
 
 
     public Controller() throws IOException, ClassNotFoundException {
-        this.start();
         fileIO = new FileIO();
         serverEvents = fileIO.readEventsFromFile();
         generatedTickets = fileIO.readTicketsFromFile();
@@ -91,7 +90,7 @@ public class Controller extends Thread{
 
     }
 
-    public void returnEvents() throws IOException {
+    public void returnEvents() throws IOException, ClassNotFoundException {
         ArrayList<String> params = new ArrayList<>();
         params.add("RETURN");
         Protocol response = new Protocol(params);
@@ -104,6 +103,7 @@ public class Controller extends Thread{
         tempe.add(new Event("Η Αλικη","PARTY",temps));
         response.setToSendevents(tempe);
         System.out.println(networkDriver);
+        updateEvents(serverEvents);
         networkDriver.send(response);
 
 

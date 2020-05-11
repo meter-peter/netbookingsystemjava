@@ -3,6 +3,7 @@ package netbookingsystem.client.functions;
 import netbookingsystem.ClientInterface;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Show;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -41,6 +42,10 @@ public class RMI {
 
         public ArrayList<Event> getAvailableEvents() throws RemoteException {
             return stub.getAvailableEvents();
+        }
+
+        public double book(String username , Event event , Show show , int seats) throws Exception {
+            return stub.book(username,event,show,seats);
         }
 }
 

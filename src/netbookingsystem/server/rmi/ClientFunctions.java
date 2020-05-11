@@ -6,11 +6,11 @@ import netbookingsystem.ClientInterface;
 
 import netbookingsystem.server.auth.AuthService;
 import netbookingsystem.server.auth.AuthStatus;
-import netbookingsystem.server.auth.User;
 import netbookingsystem.server.core.Controller;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -39,12 +39,8 @@ public class ClientFunctions implements ClientInterface {
 
     }
 
-    public boolean book(User user ,Event event, Show show , int seats){
-
-
-
-
-
+    public double book(String username , Event event, Show show , int seats) throws IOException {
+        return controller.book(username, event, show, seats);
     }
 
 }

@@ -34,7 +34,7 @@ public class Controller {
 
     }
 
-    public synchronized void syncData() throws IOException, ClassNotFoundException {
+    public  void syncData() throws IOException, ClassNotFoundException {
         liveEvents=dbFunctions.getEventsFromDB();
         liveTickets=dbFunctions.getTicketsFromDB();
     }
@@ -44,21 +44,26 @@ public class Controller {
     }
 
 
-    public  boolean book(User user , Event event , Show show,int seats){
+
+
+
+    public double book(String userid , Event event , Show show,int seats) throws IOException {
+        Ticket ticket = null;
         for(int i=0;i<liveEvents.size();i++){
             if(event.getId().equals(liveEvents.get(i).getId())){
                 for(int j=0;j<liveEvents.get(i).getShows().size();j++){
                     if(show.getId().equals(liveEvents.get(i).getShows().get(j))){
                         liveEvents.get(i).getShows().get(j).bookseats(seats);
+                        ticket = new Ticket(userid,seats,event.getTitle(),show);
+                        liveTickets.add(ticket);
+                        dbFunctions.addTicket(ticket);
                     }
                 }
 
             }
 
         }
-
-        return false;
-
+        return ticket.getPriceSum();
     }
 
     }

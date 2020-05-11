@@ -27,6 +27,8 @@ public class DBFunctions {
     }
 
 
+
+
     public synchronized ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
         ArrayList<String> params = new ArrayList<>();
         params.add("GET");
@@ -51,7 +53,13 @@ public class DBFunctions {
 
    }
 
-   public void addTicket(){
+   public void addTicket(Ticket ticket) throws IOException {
+        ArrayList<String> params = new ArrayList<>();
+        params.add("ADD");
+        params.add("TICKET");
+        Protocol protocol = new Protocol(params);
+        protocol.setToSendTicket(ticket);
+        dbSocket.getOut().writeObject(protocol);
 
    }
 

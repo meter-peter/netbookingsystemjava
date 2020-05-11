@@ -3,6 +3,7 @@ package netbookingsystem.client.frontend;
 import netbookingsystem.client.functions.RMI;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Show;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class FrontendManager {
     MainWindow mainWindow;
     LoginRegister loginRegister;
     ArrayList<Event> events;
+    String Sessionusername;
 
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
@@ -37,6 +39,8 @@ public class FrontendManager {
 
 
     private void onAuth(String username) throws RemoteException {
+        this.Sessionusername=username;
+
         syncData();
         loginRegister.dispose();
         mainWindow = new MainWindow(username , this);
@@ -45,6 +49,8 @@ public class FrontendManager {
 
 
     }
+
+
 
     public AuthStatus login(String username, String password) throws Exception {
         AuthStatus status = rmi.login(username, password);
@@ -55,6 +61,7 @@ public class FrontendManager {
 
     public  AuthStatus register(String username, String password,String email , String firstname , String lastname) throws Exception{
         AuthStatus status =  rmi.register(username, password, email, firstname, lastname);
+        System.out.println(status.toString());
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
         return status;
@@ -63,5 +70,9 @@ public class FrontendManager {
     public void syncData() throws RemoteException {
         this.events = rmi.getAvailableEvents();
         System.out.println(events);
+    }
+
+    public void book(Event event, Show show , int seats) throws Exception {
+        rmi.book(Sessionusername,event,show,seats);
     }
 }

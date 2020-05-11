@@ -8,16 +8,14 @@ public class Ticket implements Serializable {
     private String ticketHolder;
     private int seats;
     private String title;
-    private String type;
     private Show show;
     private double priceSum;
     private String id;
 
-    public Ticket (String ticketHolder, int seats, String title, String type, Show show) {
+    public Ticket (String ticketHolder, int seats, String title, Show show) {
         this.ticketHolder = ticketHolder;
         this.seats = seats;
         this.title = title;
-        this.type = type;
         this.show = show;
         this.id = UUID.randomUUID().toString();
     }
@@ -50,14 +48,6 @@ public class Ticket implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Show getShow() {

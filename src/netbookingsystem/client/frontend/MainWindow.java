@@ -93,6 +93,7 @@ public class MainWindow {
         }
         eventJList.getSelectionModel().addListSelectionListener(e -> {
             selectedEvent =eventJList.getSelectedValue();
+            new BookingSection(selectedEvent,frontendManager);
         });
     }
 }
