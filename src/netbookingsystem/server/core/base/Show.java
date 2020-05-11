@@ -18,6 +18,11 @@ public class Show implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
+    public double bookseats(int numnber){
+        this.availSeats = this.availSeats -numnber;
+        return numnber*ticketPrice;
+    }
+
     public Date getDayStart() {
         return dayStart;
     }

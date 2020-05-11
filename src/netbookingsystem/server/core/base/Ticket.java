@@ -22,6 +22,8 @@ public class Ticket implements Serializable {
         this.id = UUID.randomUUID().toString();
     }
 
+
+
     public double getTicketPrice () {
         return seats*show.getTicketPrice();
     }

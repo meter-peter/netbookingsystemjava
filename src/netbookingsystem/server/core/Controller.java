@@ -3,6 +3,7 @@ package netbookingsystem.server.core;
 import netbookingsystem.server.auth.AuthService;
 import netbookingsystem.server.auth.User;
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Show;
 import netbookingsystem.server.core.base.Ticket;
 import netbookingsystem.server.netdriver.DBSocket;
 import netbookingsystem.server.rmi.ClientFunctions;
@@ -41,4 +42,23 @@ public class Controller {
     public synchronized ArrayList<Event> getEvents(){
         return liveEvents;
     }
+
+
+    public  boolean book(User user , Event event , Show show,int seats){
+        for(int i=0;i<liveEvents.size();i++){
+            if(event.getId().equals(liveEvents.get(i).getId())){
+                for(int j=0;j<liveEvents.get(i).getShows().size();j++){
+                    if(show.getId().equals(liveEvents.get(i).getShows().get(j))){
+                        liveEvents.get(i).getShows().get(j).bookseats(seats);
+                    }
+                }
+
+            }
+
+        }
+
+        return false;
+
+    }
+
     }

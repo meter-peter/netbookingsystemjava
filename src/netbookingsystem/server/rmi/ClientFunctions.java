@@ -6,8 +6,10 @@ import netbookingsystem.ClientInterface;
 
 import netbookingsystem.server.auth.AuthService;
 import netbookingsystem.server.auth.AuthStatus;
+import netbookingsystem.server.auth.User;
 import netbookingsystem.server.core.Controller;
 import netbookingsystem.server.core.base.Event;
+import netbookingsystem.server.core.base.Show;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -34,6 +36,14 @@ public class ClientFunctions implements ClientInterface {
 
     public ArrayList<Event> getAvailableEvents() {
         return controller.getEvents();
+
+    }
+
+    public boolean book(User user ,Event event, Show show , int seats){
+
+
+
+
 
     }
 
