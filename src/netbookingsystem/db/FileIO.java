@@ -20,12 +20,10 @@ public class FileIO {
 
 
     public FileIO() throws IOException {
-
-
       fileevents = new File(eventsfile);
       filetickets = new File(ticketsfile);
-
     }
+
 
     public boolean writeEventsToFile (ArrayList<Event> events) throws IOException, ClassNotFoundException {
         try {
@@ -41,15 +39,13 @@ public class FileIO {
         }
     }
 
-
-
     public boolean writeTicketsToFile (ArrayList<Ticket> tickets) throws IOException {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filetickets));
-            out.writeObject(tickets);
-            out.flush();
-            out.close();
-            return true;
-        }
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filetickets));
+        out.writeObject(tickets);
+        out.flush();
+        out.close();
+        return true;
+    }
 
     public ArrayList<Ticket> readTicketsFromFile () throws IOException, ClassNotFoundException {
         ArrayList<Ticket> tickets = new ArrayList<>();
@@ -57,12 +53,12 @@ public class FileIO {
             filetickets.getParentFile().mkdirs();
             System.out.println("AOYA");
             return tickets;
-        } else {
+        }
+        else {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(filetickets));
             tickets = (ArrayList<Ticket>) in.readObject();
             if(tickets!=null)
                 return tickets;
-
             else
                 return new ArrayList<>();
         }
@@ -74,7 +70,8 @@ public class FileIO {
         if (!fileevents.exists()) {
             fileevents.getParentFile().mkdirs();
             return events;
-        } else {
+        }
+        else {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileevents));
             events = (ArrayList<Event>) in.readObject();
             if (events == null) {

@@ -31,9 +31,6 @@ public class Controller {
         remoteFunctions = new ClientFunctions(authService ,this);
         rmiDriver = new RmiDriver(remoteFunctions);
         syncData();
-
-
-
     }
 
     public  void syncData() throws IOException, ClassNotFoundException {

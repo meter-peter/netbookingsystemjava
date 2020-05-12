@@ -9,11 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DBFunctions {
+
     DBSocket dbSocket;
+
     public DBFunctions(DBSocket dbSocket){
         this.dbSocket=dbSocket;
     }
-
 
 
     public  ArrayList<Event> getEventsFromDB () throws IOException, ClassNotFoundException {
@@ -27,8 +28,6 @@ public class DBFunctions {
     }
 
 
-
-
     public ArrayList<Ticket> getTicketsFromDB () throws IOException, ClassNotFoundException {
         ArrayList<String> params = new ArrayList<>();
         params.add("GET");
@@ -40,21 +39,17 @@ public class DBFunctions {
         return response.getTickets();
     }
 
-   public synchronized void addEvent(Event event){
-        ArrayList<String> params = new ArrayList<>();
-        params.add("ADD");
-        params.add("EVENT");
-        Protocol protocol = new Protocol(params);
-        protocol.setToSendEvent(event);
-
-
+   public synchronized void addEvent(Event event) {
+       ArrayList<String> params = new ArrayList<>();
+       params.add("ADD");
+       params.add("EVENT");
+       Protocol protocol = new Protocol(params);
+       protocol.setToSendEvent(event);
    }
 
    public void deleteEvent(){
 
    }
-
-
 
    public void addTicket(Ticket ticket) throws IOException {
         ArrayList<String> params = new ArrayList<>();

@@ -1,7 +1,6 @@
 package netbookingsystem.db;
 import netbookingsystem.db.Controller;
 import netbookingsystem.server.netdriver.Protocol;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -31,12 +30,12 @@ public class NetworkDriver {
         inputStream = socket.getInputStream();
         out = new ObjectOutputStream(outputStream);
         in = new ObjectInputStream(inputStream);
-
-
     }
+
     public void send(Protocol protocol) throws IOException {
         getOut().writeObject(protocol);
     }
+
     public ObjectOutputStream getOut() {
         return out;
     }

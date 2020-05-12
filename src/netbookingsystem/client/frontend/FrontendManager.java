@@ -72,9 +72,13 @@ public class FrontendManager {
 
     public void book(Event event, Show show , int seats) throws Exception {
         rmi.book(Sessionusername,event,show,seats);
+        syncData();
+        syncGUIevents();
     }
 
     public void addEvent(Event event) throws Exception {
         rmi.addEvent(event);
+        syncData();
+        syncGUIevents();
     }
 }

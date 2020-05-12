@@ -35,7 +35,7 @@ public class Controller extends Thread{
         System.out.println("pernaei!");
         if (ob instanceof Protocol) {
             Protocol protocol = (Protocol) ob;
-           driveFunction(protocol);
+            driveFunction(protocol);
         }
     }
 
@@ -87,8 +87,6 @@ public class Controller extends Thread{
         params.add("ERROR");
         Protocol response = new Protocol(params);
         networkDriver.getOut().writeObject(response);
-
-
     }
 
     public void returnEvents() throws IOException, ClassNotFoundException {
@@ -107,8 +105,6 @@ public class Controller extends Thread{
         System.out.println(networkDriver);
         updateEvents(serverEvents);
         networkDriver.send(response);
-
-
     }
 
     public void returnTickets() throws IOException, ClassNotFoundException {
@@ -117,8 +113,6 @@ public class Controller extends Thread{
         Protocol response = new Protocol(params);
         response.setToSendTickets(generatedTickets);
         networkDriver.getOut().writeObject(response);
-
-
     }
 
     public void addEvent(Event event) throws IOException, ClassNotFoundException {
@@ -128,7 +122,6 @@ public class Controller extends Thread{
         responseparams.add("Event Added");
         Protocol response = new Protocol(responseparams);
         networkDriver.getOut().writeObject(response);
-
     }
 
     public void addTicket(Ticket ticket) throws IOException, ClassNotFoundException {
@@ -138,7 +131,6 @@ public class Controller extends Thread{
         responseparams.add("Ticket Added");
         Protocol response = new Protocol(responseparams);
         networkDriver.getOut().writeObject(response);
-
     }
 
     public boolean updateEvents(ArrayList<Event> events) throws IOException, ClassNotFoundException {
