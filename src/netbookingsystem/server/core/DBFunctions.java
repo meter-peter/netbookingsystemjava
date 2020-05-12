@@ -39,12 +39,13 @@ public class DBFunctions {
         return response.getTickets();
     }
 
-   public synchronized void addEvent(Event event) {
+   public void addEvent(Event event) throws IOException {
        ArrayList<String> params = new ArrayList<>();
        params.add("ADD");
        params.add("EVENT");
        Protocol protocol = new Protocol(params);
        protocol.setToSendEvent(event);
+       dbSocket.getOut().writeObject(protocol);
    }
 
    public void deleteEvent(){

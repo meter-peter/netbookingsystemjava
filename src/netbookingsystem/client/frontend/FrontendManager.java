@@ -34,6 +34,11 @@ public class FrontendManager {
         return events;
     }
 
+    public void logout(){
+        mainWindow.getMainframe().dispose();
+        loginRegister = new LoginRegister(this);
+    }
+
     public void syncGUIevents(){
        mainWindow.updatelist(events);
         SwingUtilities.updateComponentTreeUI(mainWindow.jFrame);

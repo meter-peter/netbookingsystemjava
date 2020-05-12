@@ -96,12 +96,8 @@ public class Controller extends Thread{
 
         System.out.println(serverEvents);
 
-        ArrayList<Event> tempe= new ArrayList<>();
-        ArrayList<Show> temps = new ArrayList<>();
-        temps.add(new Show(Date.from(Instant.now()),100,25.50));
-        tempe.add(new Event("Η Αλικη","PARTY",temps));
-        serverEvents.addAll(tempe);
-        response.setToSendevents(tempe);
+
+        response.setToSendevents(serverEvents);
         System.out.println(networkDriver);
         updateEvents(serverEvents);
         networkDriver.send(response);

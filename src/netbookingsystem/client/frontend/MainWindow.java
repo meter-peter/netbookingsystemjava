@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -26,6 +27,10 @@ public class MainWindow {
     Button button ;
     MainWindow clone;
     JButton jButton ;
+    JButton logoutbtn;
+    JButton refreshbtn;
+
+
 
     //DatePicker datePickerFrom;
     //DatePicker datePickerTo;
@@ -41,6 +46,11 @@ public class MainWindow {
         eventJList = new JList<>(defaultListModel);
         options = new JPanel();
         button = new Button("Find Tickets");
+        logoutbtn = new JButton("Logout");
+        content.add(logoutbtn);
+        refreshbtn = new JButton("Refresh Events");
+        content.add(refreshbtn);
+
         options.add(button);
         button.addActionListener(new ActionListener() {
             @Override
@@ -89,7 +99,25 @@ public class MainWindow {
         jFrame.setSize(1024,768);
         jFrame.setVisible(true);
 
+        refreshbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    frontendManager.syncData();
+                } catch (RemoteException remoteException) {
+                    remoteException.printStackTrace();
+                }
+                frontendManager.syncGUIevents();
+            }
+        });
 
+
+        logoutbtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frontendManager.logout();
+            }
+        });
         type.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -117,5 +145,10 @@ public class MainWindow {
         eventJList.getSelectionModel().addListSelectionListener(e -> {
             selectedEvent =eventJList.getSelectedValue();
         });
+    }
+
+
+    public  JFrame getMainframe(){
+        return jFrame;
     }
 }
