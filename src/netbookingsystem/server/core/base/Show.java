@@ -6,12 +6,16 @@ import java.util.UUID;
 
 public class Show implements Serializable {
 
-    private Date dayStart;
+    private String dayStart;
+    private String timestart;
     private int availSeats;
     private double ticketPrice;
     private String id;
+    String place;
 
-    public Show (Date dayStart, int availSeats, double ticketPrice) {
+    public Show (String dayStart,String time, int availSeats, double ticketPrice,String place) {
+        this.place=place;
+        this.timestart=time;
         this.dayStart = dayStart;
         this.availSeats = availSeats;
         this.ticketPrice = ticketPrice;
@@ -23,11 +27,11 @@ public class Show implements Serializable {
         return numnber*ticketPrice;
     }
 
-    public Date getDayStart() {
+    public String getDayStart() {
         return dayStart;
     }
 
-    public void setDayStart(Date dayStart) {
+    public void setDayStart(String dayStart) {
         this.dayStart = dayStart;
     }
 
@@ -51,10 +55,17 @@ public class Show implements Serializable {
 
     public void setId(String id) { this.id = id; }
 
+    public String getTime(){
+        return timestart;
+    }
+
+    public String getPlace(){
+        return place;
+    }
 
     @Override
     public String toString(){
-        String s=getDayStart()+"  ::" + getTicketPrice();
+        String s=getDayStart()+"-"+getTime()+"@"+ getPlace()+" :: " + getTicketPrice()+"€";
         return s;
     }
 }

@@ -3,14 +3,22 @@ package netbookingsystem.client.frontend;
 //import javafx.scene.control.DatePicker;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.EventType;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
+
 
 public class MainWindow {
     String username;
@@ -29,6 +37,8 @@ public class MainWindow {
     JButton jButton ;
     JButton logoutbtn;
     JButton refreshbtn;
+    JDatePickerImpl datePickerfrom;
+    JDatePickerImpl datePickerto;
 
 
 
@@ -61,32 +71,39 @@ public class MainWindow {
             }}
         });
 
+
+
+        //datePickerto.getModel().getValue();
+
         JLabel from = new JLabel("Από");
-//        datePickerFrom = new DatePicker();
         JLabel to = new JLabel("Μέχρι");
 //        datePickerTo = new DatePicker();
         type = new JComboBox<>();
-
+        initDatepickers();
         options.add(type);
-        options.add(from);options.add(to);
-        //options.add
-       // options.addC(datePickerFrom);
-       // options.add(datePickerTo);
+        options.add(from);
+        options.add(datePickerfrom);
+        options.add(to);
+        options.add(datePickerto);
 
         type.addItem(EventType.CINEMA.getType());
         type.addItem(EventType.CONCERT.getType());
         type.addItem(EventType.PARTY.getType());
         type.addItem(EventType.THEATURE.getType());
-        jButton= new JButton("ADD A SHOW(ADMIN)");
-        options.add(jButton);
+        if (frontendManager.Sessionusername.equals("admin")) {
+            jButton= new JButton("ADD A SHOW(ADMIN)");
+            options.add(jButton);
+            jButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    new EventAdd(frontendManager);
+                }
+            });
+        }
 
 
-        jButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-              new EventAdd(frontendManager);
-            }
-        });
+
+
 
 
         jFrame.setContentPane(content);
@@ -147,8 +164,65 @@ public class MainWindow {
         });
     }
 
+    public void initDatepickers(){
+        UtilDateModel model = new UtilDateModel();
+
+        Properties p = new Properties();
+        p.put("text.today", "Today");
+        p.put("text.month", "Month");
+        p.put("text.year", "Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        datePickerfrom = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        datePickerfrom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatelist(frontendManager.getEvents());
+            }
+        });
+
+        UtilDateModel modelto = new UtilDateModel();
+        Properties pto = new Properties();
+        pto.put("text.today", "Today");
+        pto.put("text.month", "Month");
+        pto.put("text.year", "Year");
+        JDatePanelImpl datePanelto = new JDatePanelImpl(modelto, pto);
+        datePickerto = new JDatePickerImpl(datePanelto, new DateLabelFormatter());
+        datePanelto.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updatelist(frontendManager.getEvents());
+            }
+        });
+
+
+    }
+
 
     public  JFrame getMainframe(){
         return jFrame;
     }
+}
+
+class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+
+    private String datePattern = "yyyy-MM-dd";
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+    @Override
+    public Object stringToValue(String text) throws ParseException {
+        return dateFormatter.parseObject(text);
+    }
+
+    @Override
+    public String valueToString(Object value) throws ParseException {
+        if (value != null) {
+            Calendar cal = (Calendar) value;
+            return dateFormatter.format(cal.getTime());
+        }
+
+        return "";
+    }
+
+
+
 }
