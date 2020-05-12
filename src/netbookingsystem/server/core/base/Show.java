@@ -6,14 +6,14 @@ import java.util.UUID;
 
 public class Show implements Serializable {
 
-    private String dayStart;
+    private Date dayStart;
     private String timestart;
     private int availSeats;
     private double ticketPrice;
     private String id;
     String place;
 
-    public Show (String dayStart,String time, int availSeats, double ticketPrice,String place) {
+    public Show (Date dayStart,String time, int availSeats, double ticketPrice,String place) {
         this.place=place;
         this.timestart=time;
         this.dayStart = dayStart;
@@ -27,11 +27,11 @@ public class Show implements Serializable {
         return numnber*ticketPrice;
     }
 
-    public String getDayStart() {
+    public Date getDayStart() {
         return dayStart;
     }
 
-    public void setDayStart(String dayStart) {
+    public void setDayStart(Date dayStart) {
         this.dayStart = dayStart;
     }
 

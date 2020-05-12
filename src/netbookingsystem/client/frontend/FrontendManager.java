@@ -7,6 +7,7 @@ import netbookingsystem.server.core.base.Show;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class FrontendManager {
         loginRegister = new LoginRegister(this);
     }
 
-    public void syncGUIevents(){
+    public void syncGUIevents() throws ParseException {
        mainWindow.updatelist(events);
         SwingUtilities.updateComponentTreeUI(mainWindow.jFrame);
 

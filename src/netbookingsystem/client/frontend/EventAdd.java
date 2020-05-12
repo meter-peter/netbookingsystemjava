@@ -36,7 +36,7 @@ public class EventAdd {
     JDatePickerImpl datePicker;
     JComboBox<Integer> minutes;
     JComboBox<Integer> hours;
-    DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+    SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
     JTextField placefield;
 
 
@@ -146,7 +146,7 @@ public class EventAdd {
     }
 
     public void addshow(){
-        defaultListModel.add(defaultListModel.size(),new Show(df.format(datePicker.getModel().getValue())
+        defaultListModel.add(defaultListModel.size(),new Show((Date) datePicker.getModel().getValue()
                 ,hours.getSelectedItem().toString()+":"+minutes.getSelectedItem().toString()
                 ,Integer.parseInt(seatstextField.getText())
                 ,Double.parseDouble(ticketpricefield.getText()),placefield.getText()));

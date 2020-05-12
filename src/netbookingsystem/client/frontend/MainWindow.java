@@ -12,7 +12,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,11 +126,15 @@ public class MainWindow {
                 } catch (RemoteException remoteException) {
                     remoteException.printStackTrace();
                 }
-                frontendManager.syncGUIevents();
+                try {
+                    frontendManager.syncGUIevents();
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
             }
         });
 
-
+            jFrame.pack();
         logoutbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -155,8 +161,30 @@ public class MainWindow {
         int x =0 ;
         for(int i=0;i<list.size();i++){
             if(eventArrayList.get(i).getEventType().getType().equals(type.getSelectedItem())){
-                defaultListModel.add(x,eventArrayList.get(i));
-                x++;
+                for(int j=0;j<eventArrayList.get(i).getShows().size();j++){
+                    if(datePickerfrom.getModel().getValue()!=null && datePickerto.getModel().getValue()!=null){
+                        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+
+                        Date datefrom = (Date)datePickerfrom.getModel().getValue();
+                        Date eventdate = eventArrayList.get(i).getShows().get(j).getDayStart();
+                        Date dateto = (Date) datePickerto.getModel().getValue();
+                        System.out.println("datefrom"+datefrom.toString()+"eventdate"+eventdate+"dateto"+dateto);
+
+
+                        if(datefrom.before(eventdate) && dateto.after(eventdate)){
+
+                            defaultListModel.add(x,eventArrayList.get(i));
+                            x++;
+
+                        }
+                    }else{
+                        defaultListModel.add(x,eventArrayList.get(i));
+                        x++;
+
+                    }
+
+                }
+
             }
         }
         eventJList.getSelectionModel().addListSelectionListener(e -> {
@@ -205,8 +233,7 @@ public class MainWindow {
 
 class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 
-    private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+    SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public Object stringToValue(String text) throws ParseException {
