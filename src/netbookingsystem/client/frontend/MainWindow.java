@@ -25,6 +25,8 @@ public class MainWindow {
     Event selectedEvent;
     Button button ;
     MainWindow clone;
+    JButton jButton ;
+
     //DatePicker datePickerFrom;
     //DatePicker datePickerTo;
 
@@ -65,8 +67,16 @@ public class MainWindow {
         type.addItem(EventType.CONCERT.getType());
         type.addItem(EventType.PARTY.getType());
         type.addItem(EventType.THEATURE.getType());
+        jButton= new JButton("ADD A SHOW(ADMIN)");
+        options.add(jButton);
 
 
+        jButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+              new EventAdd(frontendManager);
+            }
+        });
 
 
         jFrame.setContentPane(content);
