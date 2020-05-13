@@ -15,7 +15,7 @@ public class RmiDriver {
         this.remoteFunctions = remoteFunctions;
 
     try {
-        System.setProperty("java.rmi.server.hostname", Inet4Address.getLocalHost().getHostAddress());
+        System.setProperty("java.rmi.server.hostname","192.168.1.15");
         LocateRegistry.createRegistry(5555);
         ClientInterface stub = (ClientInterface) UnicastRemoteObject.exportObject(remoteFunctions, 5555);
 

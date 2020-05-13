@@ -75,14 +75,20 @@ public class FrontendManager {
 
     public void syncData() throws RemoteException {
         this.events = rmi.getAvailableEvents();
-        System.out.println(events);
+
     }
 
     public void book(Event event, Show show , int seats) throws Exception {
+        String eventid = event.getId();
         rmi.book(Sessionusername,event,show,seats);
         syncData();
+        for(Event e:events){
+            if(e.getId().equals(eventid));
+            mainWindow.bookingSection.setEvent(e);
+            SwingUtilities.updateComponentTreeUI(mainWindow.bookingSection.jframe);
+        }
+            mainWindow.bookingSection.jframe.dispose();
         syncGUIevents();
-        mainWindow.bookingSection.jframe.dispose();
 
     }
 
@@ -92,9 +98,16 @@ public class FrontendManager {
         syncGUIevents();
     }
 
-    public void showMessage(String message) throws ParseException, RemoteException {
+
+    public void showmessagedialog(){
         JFrame jFrame = new JFrame("messagedialog frame");
-        JOptionPane.showMessageDialog(jFrame,message);
+        JOptionPane.showMessageDialog(jFrame,"Special Offer for you", "Ekptwsh megalh se epilegmena proiont",
+                JOptionPane.INFORMATION_MESSAGE);
+
+    }
+    public void showMessage(String message) throws ParseException, RemoteException {
+        showmessagedialog();
+
         syncData();
         syncGUIevents();
 

@@ -110,11 +110,10 @@ public class ServerController {
     public void onBook(String id,Ticket ticket , Show show) throws IOException, ParseException {
         getLiveTickets().add(ticket);
         dbFunctions.addTicket(ticket);
-        show.bookseats(ticket.getSeats());
 
-        dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),ticket.getTicketPrice());
+        dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),show.getTicketPrice());
         if(show.getAvailSeats()<=10){
-            Double newprice = show.getTicketPrice() - (show.getTicketPrice()*40/100);
+            Double newprice = (show.getTicketPrice()) - (show.getTicketPrice()*40/100);
             dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),newprice);
             showDiscountMessage();
 

@@ -39,7 +39,7 @@ public class BookingSection {
         bookbutton = new JButton("Proceed To Payment");
         jPanel.add(eventTitle);
         jPanel.add(shows);
-        defaultListModel.addAll(event.getShows());
+        updateEventGUI();
         seats= new JComboBox<>();
         JLabel seatslabel= new JLabel("Seats");
         jPanel.add(seatslabel);
@@ -78,7 +78,7 @@ jPanel.setVisible(true);
     }
 
 
-    public void updateEventGUI(Event event){
+    public void updateEventGUI(){
         defaultListModel.clear();
         defaultListModel.addAll(event.getShows());
         shows.getSelectionModel().addListSelectionListener(e -> {
@@ -91,8 +91,12 @@ jPanel.setVisible(true);
 
     }
 
+    public void setEvent(Event event){
+        this.event = event;
+    }
 
     public void setJCombobox(){
+        seats.removeAllItems();
         for(int i=0;i<selected.getAvailSeats();i++){
             Integer integer = i+1;
             seats.addItem(integer);

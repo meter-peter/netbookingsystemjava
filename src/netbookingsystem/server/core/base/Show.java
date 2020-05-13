@@ -23,7 +23,7 @@ public class Show implements Serializable {
     }
 
     public double bookseats(int numnber){
-        this.availSeats = this.availSeats-numnber;
+        availSeats = availSeats - numnber;
         return numnber*ticketPrice;
     }
 
@@ -65,7 +65,7 @@ public class Show implements Serializable {
 
     @Override
     public String toString(){
-        String s=getDayStart()+"-"+getTime()+"@"+ getPlace()+" :: " + getTicketPrice()+"€";
+        String s=getDayStart()+"-"+getTime()+"@"+ getPlace()+" :: " + getTicketPrice()+"€ Available"+getAvailSeats();
         return s;
     }
 }
