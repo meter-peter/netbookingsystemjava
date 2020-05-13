@@ -7,6 +7,7 @@ import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
 
 import javax.swing.*;
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -99,14 +100,17 @@ public class FrontendManager {
     }
 
 
-    public void showmessagedialog(){
-        JFrame jFrame = new JFrame("messagedialog frame");
-        JOptionPane.showMessageDialog(jFrame,"Special Offer for you", "Ekptwsh megalh se epilegmena proiont",
-                JOptionPane.INFORMATION_MESSAGE);
-
+    private void ShowMessage(String message) {
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JOptionPane.showMessageDialog(null, "MEGALH EKPTOSI STA TRYPAKIA");
+            }
+        });
     }
+
     public void showMessage(String message) throws ParseException, RemoteException {
-        showmessagedialog();
+        ShowMessage(message);
 
         syncData();
         syncGUIevents();
