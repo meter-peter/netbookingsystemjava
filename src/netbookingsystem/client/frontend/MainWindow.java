@@ -41,6 +41,8 @@ public class MainWindow {
     JButton refreshbtn;
     JDatePickerImpl datePickerfrom;
     JDatePickerImpl datePickerto;
+    EventAdd eventadd;
+    BookingSection bookingSection;
 
 
 
@@ -69,7 +71,7 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 if(selectedEvent!=null){
                     System.out.println(selectedEvent.getTitle());
-                new BookingSection(selectedEvent,frontendManager,clone);
+               bookingSection = new BookingSection(selectedEvent,frontendManager,clone);
             }}
         });
 
@@ -98,14 +100,10 @@ public class MainWindow {
             jButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    new EventAdd(frontendManager);
+                    eventadd = new EventAdd(frontendManager);
                 }
             });
         }
-
-
-
-
 
 
         jFrame.setContentPane(content);

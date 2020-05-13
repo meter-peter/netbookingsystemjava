@@ -1,10 +1,12 @@
-package netbookingsystem.client.functions;
+package netbookingsystem.client.functions.rmi;
 
 import netbookingsystem.ClientInterface;
+import netbookingsystem.UserInterface;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
 
+import java.net.Inet4Address;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -13,15 +15,14 @@ import java.util.ArrayList;
 
 public class RMI {
     ClientInterface stub;
-
-        public RMI() {
+            public RMI() {
             initRMI();
 
         }
         public void initRMI(){
            try {
                Registry registry = LocateRegistry.getRegistry(5555);
-
+               System.setProperty("java.rmi.server.hostname", Inet4Address.getLocalHost().getHostAddress());
                stub = (ClientInterface) Naming.lookup("rmi://localhost:5555/login");
 
            } catch (Exception e) {
@@ -31,12 +32,12 @@ public class RMI {
 
         }
 
-        public AuthStatus login(String username , String password) throws Exception {
-           return stub.login(username, password);
+        public AuthStatus login(String username , String password, UserInterface userInterface) throws Exception {
+           return stub.login(username, password,userInterface);
 
         }
-        public AuthStatus register(String username, String password, String email , String firstname , String lastname) throws Exception {
-            return stub.register(username,password,email,firstname,lastname);
+        public AuthStatus register(String username, String password, String email , String firstname , String lastname,UserInterface userInterface) throws Exception {
+            return stub.register(username,password,email,firstname,lastname,userInterface);
 
         }
 

@@ -76,6 +76,24 @@ public class Controller extends Thread{
 
                     }
                 }
+
+            case "MODIFY":
+                    for (int i = 0; i < serverEvents.size(); i++) {
+                            if (serverEvents.get(i).getId().equals(packet.getParams().get(1))) {
+                                for (Show show : serverEvents.get(i).getShows()) {
+                                    if (show.getId().equals(packet.getParams().get(2))) {
+                                        show.setAvailSeats(Integer.parseInt(packet.getParams().get(3)));
+                                        show.setTicketPrice(Double.parseDouble(packet.getParams().get(4)));
+                                        updateEvents(serverEvents);
+                                    }
+                                }
+
+                            }
+
+                        }
+
+
+
             default:
                 Errrespond();
                 break;

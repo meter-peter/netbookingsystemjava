@@ -15,11 +15,12 @@ public class PaymentPanel {
     JTextField cvvfielf;
     JComboBox<String> types;
     JPanel myPanel;
+    JFrame jFrame;
 
 
 
     public PaymentPanel(FrontendManager frontendManager , BookingSection bookingSection) throws Exception {
-        JFrame jFrame = new JFrame("Pay Now");
+        jFrame = new JFrame("Pay Now");
         this.frontendManager= frontendManager;
         this.bookingSection = bookingSection;
         JLabel name =new JLabel("Owner's Name");
@@ -54,6 +55,8 @@ public class PaymentPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     frontendManager.book(bookingSection.event,bookingSection.selected,(Integer)bookingSection.seats.getSelectedItem());
+                    jFrame.dispose();
+
                 } catch (Exception exception) {
                     exception.printStackTrace();
                 }

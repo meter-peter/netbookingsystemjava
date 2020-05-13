@@ -21,13 +21,13 @@ public class BookingSection {
     JButton bookbutton;
     MainWindow mainWindow;
     BookingSection clone;
-
+    JFrame jframe;
 
 
 
 
     public BookingSection(Event event ,FrontendManager frontendManager, MainWindow mainWindow){
-        JFrame jframe = new JFrame("Almost Ready");
+        jframe = new JFrame("Almost Ready");
         jframe.setSize(800,600);
         this.event=event;
         this.mainWindow =mainWindow;
@@ -78,7 +78,18 @@ jPanel.setVisible(true);
     }
 
 
+    public void updateEventGUI(Event event){
+        defaultListModel.clear();
+        defaultListModel.addAll(event.getShows());
+        shows.getSelectionModel().addListSelectionListener(e -> {
+            selected = shows.getSelectedValue();
+            setJCombobox();
 
+
+
+        });
+
+    }
 
 
     public void setJCombobox(){

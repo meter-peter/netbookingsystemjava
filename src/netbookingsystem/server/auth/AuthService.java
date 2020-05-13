@@ -2,7 +2,7 @@ package netbookingsystem.server.auth;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import netbookingsystem.server.core.Controller;
+import netbookingsystem.server.core.ServerController;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,11 +17,11 @@ import java.util.List;
 public class AuthService {
     ArrayList<User> users;
     User toAuth;
-    Controller controller;
+    ServerController controller;
     ArrayList<User> loggedInUsers;
     File usersFile;
 
-    public AuthService(Controller controller) throws IOException {
+    public AuthService(ServerController controller) throws IOException {
 
         this.controller = controller;
         this.users=new ArrayList<>();

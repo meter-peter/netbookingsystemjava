@@ -1,6 +1,7 @@
 package netbookingsystem.client.frontend;
 
-import netbookingsystem.client.functions.RMI;
+import netbookingsystem.client.functions.rmi.RMI;
+import netbookingsystem.client.functions.rmi.RemoteUtils;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
@@ -9,7 +10,6 @@ import javax.swing.*;
 import java.rmi.RemoteException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FrontendManager {
 
@@ -18,15 +18,17 @@ public class FrontendManager {
     LoginRegister loginRegister;
     ArrayList<Event> events;
     String Sessionusername;
+    RemoteUtils remoteUtils;
 
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
     }
 
-    public FrontendManager(RMI rmi){
+    public FrontendManager(RMI rmi) throws RemoteException {
         this.rmi=rmi;
         events=new ArrayList<>();
         loginRegister = new LoginRegister(this);
+        remoteUtils = new RemoteUtils(this);
 
 
     }
@@ -57,14 +59,14 @@ public class FrontendManager {
     }
 
     public AuthStatus login(String username, String password) throws Exception {
-        AuthStatus status = rmi.login(username, password);
+        AuthStatus status = rmi.login(username, password,remoteUtils);
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
        return status;
     }
 
     public  AuthStatus register(String username, String password,String email , String firstname , String lastname) throws Exception{
-        AuthStatus status =  rmi.register(username, password, email, firstname, lastname);
+        AuthStatus status =  rmi.register(username, password, email, firstname, lastname,remoteUtils);
         System.out.println(status.toString());
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
@@ -80,11 +82,22 @@ public class FrontendManager {
         rmi.book(Sessionusername,event,show,seats);
         syncData();
         syncGUIevents();
+        mainWindow.bookingSection.jframe.dispose();
+
     }
 
     public void addEvent(Event event) throws Exception {
         rmi.addEvent(event);
         syncData();
         syncGUIevents();
+    }
+
+    public void showMessage(String message) throws ParseException, RemoteException {
+        JFrame jFrame = new JFrame("messagedialog frame");
+        JOptionPane.showMessageDialog(jFrame,message);
+        syncData();
+        syncGUIevents();
+
+
     }
 }

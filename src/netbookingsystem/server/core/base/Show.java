@@ -23,7 +23,7 @@ public class Show implements Serializable {
     }
 
     public double bookseats(int numnber){
-        this.availSeats = this.availSeats -numnber;
+        this.availSeats = this.availSeats-numnber;
         return numnber*ticketPrice;
     }
 

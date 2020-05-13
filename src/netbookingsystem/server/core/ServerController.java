@@ -1,7 +1,7 @@
 package netbookingsystem.server.core;
 
+import netbookingsystem.UserInterface;
 import netbookingsystem.server.auth.AuthService;
-import netbookingsystem.server.auth.User;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
 import netbookingsystem.server.core.base.Ticket;
@@ -10,9 +10,13 @@ import netbookingsystem.server.rmi.ClientFunctions;
 import netbookingsystem.server.rmi.RmiDriver;
 
 import java.io.IOException;
+import java.rmi.RemoteException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
-public class Controller {
+public class ServerController {
     DBSocket dbSocket;
     DBFunctions dbFunctions;
     AuthService authService;
@@ -20,9 +24,14 @@ public class Controller {
     ArrayList<Event> liveEvents;
     ArrayList<Ticket> liveTickets;
     RmiDriver rmiDriver;
+    ArrayList<UserInterface> loggedUsers;
+    Calendar calendar ;
+    int dayOfWeek;
 
 
-    public Controller() throws IOException, ClassNotFoundException {
+
+
+    public ServerController() throws IOException, ClassNotFoundException {
         liveTickets=new ArrayList<>();
         liveEvents=new ArrayList<>();
         dbSocket = new DBSocket();
@@ -30,15 +39,33 @@ public class Controller {
         authService = new AuthService(this);
         remoteFunctions = new ClientFunctions(authService ,this);
         rmiDriver = new RmiDriver(remoteFunctions);
+        loggedUsers = new ArrayList<>();
+        calendar = Calendar.getInstance(TimeZone.getDefault());
+
         syncData();
     }
 
-    public  void syncData() throws IOException, ClassNotFoundException {
+    public void join(UserInterface userInterface){
+        loggedUsers.add(userInterface);
+    }
+
+
+
+    public void showDiscountMessage() throws RemoteException, ParseException {
+        for(UserInterface user : loggedUsers){
+            user.pushNotification("WELCOME");
+
+
+        }
+    }
+    public synchronized void syncData() throws IOException, ClassNotFoundException {
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         liveEvents.clear();
-        liveEvents.addAll(dbFunctions.getEventsFromDB());
+        liveEvents = dbFunctions.getEventsFromDB();
         liveTickets.clear();
         liveTickets = dbFunctions.getTicketsFromDB();
         System.out.println(liveTickets);
+
     }
 
     public synchronized ArrayList<Ticket> getLiveTickets(){
@@ -56,23 +83,20 @@ public class Controller {
 
 
 
-    public double book(String userid , Event event , Show show,int seats) throws IOException {
+    public double book(String userid , Event event , Show show,int seats) throws IOException, ParseException {
     System.out.println(userid+event.getTitle()+show.getId()+seats);
 
         for (int i = 0; i < liveEvents.size(); i++) {
             if (event.getId().equals(liveEvents.get(i).getId())) {
                 System.out.println(liveEvents.get(i));
                 for (int j = 0; j < liveEvents.get(i).getShows().size(); j++) {
+                    Show temp =liveEvents.get(i).getShows().get(j);
+                    if (show.getId().equals(temp.getId())) {
 
-                    if (show.getId().equals(liveEvents.get(i).getShows().get(j).getId())) {
-                        System.out.println("AOUA");
-                        Ticket ticket = new Ticket(userid, seats, event.getTitle(), show);
+                        Ticket ticket = new Ticket(userid, seats, event.getTitle(), temp);
                         ticket.setPriceSum(liveEvents.get(i).getShows().get(j).bookseats(seats));
-                        System.out.println(ticket);
-                        getLiveTickets().add(ticket);
-                        dbFunctions.addTicket(ticket);
-
-                        return ticket.getPriceSum();
+                        onBook(liveEvents.get(i).getId(),ticket,temp);
+                        return 0.0;
                     }
                 }
 
@@ -82,4 +106,21 @@ public class Controller {
 
         return 0.0;
     }
+
+    public void onBook(String id,Ticket ticket , Show show) throws IOException, ParseException {
+        getLiveTickets().add(ticket);
+        dbFunctions.addTicket(ticket);
+        show.bookseats(ticket.getSeats());
+
+        dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),ticket.getTicketPrice());
+        if(show.getAvailSeats()<=10){
+            Double newprice = show.getTicketPrice() - (show.getTicketPrice()*40/100);
+            dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),newprice);
+            showDiscountMessage();
+
+        }
+
+
     }
+
+}

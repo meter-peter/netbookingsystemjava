@@ -6,6 +6,7 @@ import netbookingsystem.server.netdriver.DBSocket;
 import netbookingsystem.server.netdriver.Protocol;
 
 import java.io.IOException;
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
 
 public class DBFunctions {
@@ -51,6 +52,17 @@ public class DBFunctions {
    public void deleteEvent(){
 
    }
+
+   public void modifyShow(String eventID, String showID,Integer newSeats , Double price) throws IOException {
+        ArrayList<String> params = new ArrayList<>();
+        params.add("MODIFY");
+        params.add(eventID);
+        params.add(showID);
+        params.add(newSeats.toString());
+        params.add(price.toString());
+        Protocol protocol = new Protocol(params);
+        dbSocket.getOut().writeObject(protocol);
+    }
 
    public void addTicket(Ticket ticket) throws IOException {
         ArrayList<String> params = new ArrayList<>();
