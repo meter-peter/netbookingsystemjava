@@ -24,6 +24,7 @@ public class Controller extends Thread{
         fileIO = new FileIO();
         serverEvents = fileIO.readEventsFromFile();
         generatedTickets = fileIO.readTicketsFromFile();
+        System.out.println("ALL SERVER TICKETS"+generatedTickets);
         networkDriver = new NetworkDriver(this);
         while (true) {
             acceptpacket();
@@ -107,14 +108,16 @@ public class Controller extends Thread{
         networkDriver.getOut().writeObject(response);
     }
 
+    public void deleteTicket(){
+    }
+
     public void returnEvents() throws IOException, ClassNotFoundException {
         ArrayList<String> params = new ArrayList<>();
         params.add("RETURN");
         Protocol response = new Protocol(params);
-
+        if(serverEvents==null)
+            serverEvents=new ArrayList<>();
         System.out.println(serverEvents);
-
-
         response.setToSendevents(serverEvents);
         System.out.println(networkDriver);
         updateEvents(serverEvents);
@@ -122,11 +125,16 @@ public class Controller extends Thread{
     }
 
     public void returnTickets() throws IOException, ClassNotFoundException {
+        generatedTickets = readTickets();
         ArrayList<String> params = new ArrayList<>();
         params.add("RETURN");
         Protocol response = new Protocol(params);
+        System.out.println("Tickets to be sent" +generatedTickets);
+        if(generatedTickets!=null)
         response.setToSendTickets(generatedTickets);
+        else response.setToSendTickets(new ArrayList<>());
         networkDriver.getOut().writeObject(response);
+        System.out.println("ALL SERVER TICKETS"+generatedTickets);
     }
 
     public void addEvent(Event event) throws IOException, ClassNotFoundException {

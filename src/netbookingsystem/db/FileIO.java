@@ -57,10 +57,10 @@ public class FileIO {
         else {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(filetickets));
             tickets = (ArrayList<Ticket>) in.readObject();
-            if(tickets!=null)
-                return tickets;
-            else
+            if(tickets ==null)
                 return new ArrayList<>();
+            else
+                return tickets;
         }
     }
 

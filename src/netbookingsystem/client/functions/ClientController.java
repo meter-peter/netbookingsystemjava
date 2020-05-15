@@ -9,7 +9,6 @@ import java.rmi.RemoteException;
 public class ClientController {
     RMI rmi;
     FrontendManager frontendManager;
-    RemoteUtils remoteUtils;
 
     public ClientController() throws RemoteException {
        rmi = new RMI();

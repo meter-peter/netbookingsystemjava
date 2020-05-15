@@ -42,8 +42,13 @@ public class MainWindow {
     JDatePickerImpl datePickerto;
     EventAdd eventadd;
     BookingSection bookingSection;
+    Ticket selectedTicket;
+    JButton cancelticket;
+    JButton deleteEvent;
+    JButton deleteAccount;
 
-    JList mytickets;
+
+    JList<Ticket> mytickets;
     DefaultListModel ticketmodel;
 
     public MainWindow(String user, FrontendManager frontendManager){
@@ -57,14 +62,29 @@ public class MainWindow {
         jSplitPane = new JSplitPane();
         eventmodel = new DefaultListModel();
         eventJList = new JList<>(eventmodel);
-        options = new JPanel();
+        options = new JPanel(new GridLayout(4,2));
         button = new Button("Find Tickets");
         logoutbtn = new JButton("Logout");
         content.add(logoutbtn);
         refreshbtn = new JButton("Refresh Events");
         content.add(refreshbtn);
+        cancelticket = new JButton("Cancel Selected Ticket");
+        cancelticket.setBackground(Color.red);
+        deleteAccount = new JButton("Delete My Account");
 
         options.add(button);
+        content.add(deleteAccount);
+        deleteAccount.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    frontendManager.deleteAccount();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                frontendManager.logout();
+            }
+        });
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,12 +110,27 @@ public class MainWindow {
         type.addItem(EventType.PARTY.getType());
         type.addItem(EventType.THEATURE.getType());
         if (frontendManager.Sessionusername.equals("admin")) {
+            deleteEvent= new JButton("Delete Selected Event");
+            content.add(deleteEvent);
+            deleteEvent.setBackground(Color.red);
             jButton= new JButton("ADD A SHOW(ADMIN)");
             options.add(jButton);
             jButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
                     eventadd = new EventAdd(frontendManager);
+                }
+            });
+            deleteEvent.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent) {
+                    try {
+                        frontendManager.deleteEvent(selectedEvent.getId());
+                        frontendManager.syncData();
+                        frontendManager.syncGUIevents();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }
@@ -114,8 +149,11 @@ public class MainWindow {
             public void actionPerformed(ActionEvent e) {
                 try {
                     frontendManager.syncData();
+                    frontendManager.updateTickets();
                 } catch (RemoteException remoteException) {
                     remoteException.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
                 try {
                     frontendManager.syncGUIevents();
@@ -127,7 +165,7 @@ public class MainWindow {
             }
         });
 
-            jFrame.pack();
+
         logoutbtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -140,8 +178,24 @@ public class MainWindow {
                 updatelist(frontendManager.getEvents());
             }
         });
+        JLabel ticketslabel = new JLabel("Orders");
+        content.add(ticketslabel);
+        content.add(new JScrollPane(mytickets));
+        content.add(cancelticket);
+        jFrame.pack();
 
-        options.add(mytickets);
+
+        cancelticket.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    frontendManager.cancelTicket(selectedTicket);
+                    JOptionPane.showMessageDialog(jFrame,"Εχετε αιτηθεί ακύρωση του εισιτηρίου"+selectedTicket.getId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
 
     }
@@ -223,6 +277,9 @@ public class MainWindow {
 
     public void updatetickets(ArrayList<Ticket> tickets){
         ticketmodel.addAll(tickets);
+        mytickets.getSelectionModel().addListSelectionListener(e -> {
+            selectedTicket =mytickets.getSelectedValue();
+        });
     }
 
 

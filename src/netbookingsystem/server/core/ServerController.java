@@ -51,7 +51,7 @@ public class ServerController {
 
 
 
-    public void showDiscountMessage() throws Exception {
+    public void showDiscountMessage(String id) throws Exception {
         for(UserInterface user : loggedUsers){
             user.pushNotification("WELCOME");
 
@@ -60,50 +60,54 @@ public class ServerController {
     }
     public synchronized void syncData() throws IOException, ClassNotFoundException {
         dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
-        liveEvents.clear();
         liveEvents = dbFunctions.getEventsFromDB();
-        liveTickets.clear();
         liveTickets = dbFunctions.getTicketsFromDB();
-        System.out.println(liveTickets);
+        System.out.println("SYNCDATA TICKETS"+liveTickets);
+        System.out.println("SYNCDATA EVENTS"+liveEvents);
 
     }
 
-    public synchronized ArrayList<Ticket> getLiveTickets(){
+    public  ArrayList<Ticket> getLiveTickets(){
         return liveTickets;
     }
-    public synchronized ArrayList<Event> getEvents(){
+    public  ArrayList<Event> getEvents(){
         return liveEvents;
     }
 
 
-    public void addEvent(Event event) throws IOException {
+    public synchronized void addEvent(Event event) throws IOException, ClassNotFoundException {
+        syncData();
         liveEvents.add(event);
         dbFunctions.addEvent(event);
     }
 
 
-    public ArrayList<Ticket> getUserTickets(String username) throws IOException, ClassNotFoundException {
+    public synchronized ArrayList<Ticket> getUserTickets(String username) throws IOException, ClassNotFoundException {
         syncData();
         ArrayList<Ticket> temp = new ArrayList<>();
-        for(Ticket ticket:liveTickets){
-            if ((ticket.getTicketHolder().equals(username)))
-                temp.add(ticket);
-        }
-        return temp;
+        if(liveTickets!=null) {
+            for (Ticket ticket : liveTickets) {
+                if ((ticket.getTicketHolder().equals(username)))
+                    temp.add(ticket);
+            }
+            return temp;
+        }else return new ArrayList<>();
     }
 
-    public void deleteTicket(Ticket ticket) throws IOException, ClassNotFoundException {
+    public synchronized void  deleteTicket(Ticket ticket) throws IOException, ClassNotFoundException {
         syncData();
-        for(Ticket t:liveTickets){
-            if(ticket.getId().equals(t.getId()));
-            liveTickets.remove(t);
+        for(int i=0;i<liveTickets.size();i++){
+            if(ticket.getId().equals(liveTickets.get(i).getId()));
+            liveTickets.remove(i);
+            dbFunctions.deleteTicket(ticket);
+
 
 
         }
 
     }
 
-    public boolean book(String userid , Event event , Show show, int seats) throws Exception {
+    public synchronized boolean book(String userid , Event event , Show show, int seats) throws Exception {
         System.out.println(userid+event.getTitle()+show.getId()+seats);
         for (int i = 0; i < liveEvents.size(); i++) {
             if (event.getId().equals(liveEvents.get(i).getId())) {
@@ -111,10 +115,10 @@ public class ServerController {
 
                     Show temp =liveEvents.get(i).getShows().get(j);
 
-                    if (show.getId().equals(temp.getId())&&temp.getAvailSeats()>seats) {
+                    if (show.getId().equals(temp.getId())&&temp.getAvailSeats()>=seats) {
                         Ticket ticket = new Ticket(userid, seats, event.getTitle(), temp);
                         ticket.setPriceSum(liveEvents.get(i).getShows().get(j).bookseats(seats));
-                        onBook(liveEvents.get(i).getId(),ticket,temp);
+                        onBook(liveEvents.get(i).getId(),ticket,temp,event);
                         return true;
                     }
                     else return false;
@@ -127,15 +131,26 @@ public class ServerController {
         return false;
     }
 
-    public void onBook(String id,Ticket ticket , Show show) throws Exception {
+    public void deleteAccount(String username){
+        authService.deleteAccount(username);
+
+    }
+
+    public void deleteEvent(String eventid) throws IOException, ClassNotFoundException {
+        dbFunctions.deleteEvent(eventid);
+        liveEvents=dbFunctions.getEventsFromDB();
+
+    }
+    public synchronized void onBook(String id,Ticket ticket , Show show, Event event) throws Exception {
         getLiveTickets().add(ticket);
         dbFunctions.addTicket(ticket);
+        System.out.println("Ticket Added");
 
         dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),show.getTicketPrice());
         if(show.getAvailSeats()<=10){
             Double newprice = (show.getTicketPrice()) - (show.getTicketPrice()*40/100);
             dbFunctions.modifyShow(id,show.getId(),show.getAvailSeats(),newprice);
-            showDiscountMessage();
+            showDiscountMessage("10 θέσεις έμειναν , Εκπτωση 40% στο "+event.getTitle()+" στην παράσταση "+show.getDayStart());
 
         }
 
