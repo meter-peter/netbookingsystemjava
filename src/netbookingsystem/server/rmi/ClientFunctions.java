@@ -66,4 +66,12 @@ public class ClientFunctions implements ClientInterface {
         controller.deleteTicket(ticket);
 
     }
+
+    public void deleteEvent(String Eventid) throws IOException, ClassNotFoundException {
+        controller.deleteEvent(Eventid);
+    }
+
+    public void deleteAccount(String username){
+        controller.deleteAccount(username);
+    }
 }

@@ -36,7 +36,7 @@ public class DBFunctions {
         Protocol protocol = new Protocol(params);
         dbSocket.getOut().writeObject(protocol);
         Protocol response = (Protocol) dbSocket.getIn().readObject();
-        System.out.println("DBFUNCTIONS"+response.getTickets());
+        System.out.println("DBFUNCTIONS CAME"+response.getTickets());
         return response.getTickets();
     }
 
@@ -49,7 +49,13 @@ public class DBFunctions {
        dbSocket.getOut().writeObject(protocol);
    }
 
-   public void deleteEvent(){
+   public void deleteEvent(String ticketid) throws IOException {
+       ArrayList<String> params = new ArrayList<>();
+       params.add("DELETE");
+       params.add("EVENT");
+       params.add(ticketid);
+       Protocol protocol = new Protocol(params);
+       dbSocket.getOut().writeObject(protocol);
 
    }
 
@@ -74,5 +80,12 @@ public class DBFunctions {
 
    }
 
-   public void deleteTicket(){}
+   public void deleteTicket(Ticket ticket) throws IOException {
+       ArrayList<String> params = new ArrayList<>();
+       params.add("DELETE");
+       params.add("TICKET");
+       params.add(ticket.getId());
+       Protocol protocol = new Protocol(params);
+       dbSocket.getOut().writeObject(protocol);
+   }
 }

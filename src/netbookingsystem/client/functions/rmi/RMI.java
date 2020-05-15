@@ -57,8 +57,15 @@ public class RMI {
             stub.addEvent(event);
         }
 
+        public void deleteEvent(String eventid) throws Exception {
+                stub.deleteEvent(eventid);
+        }
         public void deleteTicket(Ticket ticket) throws Exception {
                 stub.deleteTicket(ticket);
+        }
+
+        public void deleteAccount(String username) throws Exception {
+                stub.deleteAccount(username);
         }
 
 }

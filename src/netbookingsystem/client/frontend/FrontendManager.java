@@ -21,6 +21,7 @@ public class FrontendManager {
     ArrayList<Event> events;
     String Sessionusername;
     RemoteUtils remoteUtils;
+    ArrayList<Ticket> ticketsbuffer;
 
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
@@ -29,6 +30,7 @@ public class FrontendManager {
     public FrontendManager(RMI rmi) throws RemoteException {
         this.rmi=rmi;
         events=new ArrayList<>();
+        ticketsbuffer = new ArrayList<>();
         loginRegister = new LoginRegister(this);
         remoteUtils = new RemoteUtils(this);
 
@@ -40,10 +42,9 @@ public class FrontendManager {
 
     }
 
-    public void getTickets() throws Exception {
+    public void updateTickets() throws Exception {
+        mainWindow.updatetickets(ticketsbuffer);
 
-        mainWindow.ticketmodel.clear();
-        mainWindow.ticketmodel.addAll(rmi.getMyTickets(Sessionusername));
 
     }
 
@@ -58,7 +59,7 @@ public class FrontendManager {
 
     public void syncGUIevents() throws Exception {
        mainWindow.updatelist(events);
-       getTickets();
+       mainWindow.updatetickets(ticketsbuffer);
         SwingUtilities.updateComponentTreeUI(mainWindow.jFrame);
 
         }
@@ -77,6 +78,7 @@ public class FrontendManager {
         AuthStatus status = rmi.login(username, password,remoteUtils);
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
+        else showMessage(status.getMessage());
        return status;
     }
 
@@ -85,20 +87,29 @@ public class FrontendManager {
         System.out.println(status.toString());
         if(status==AuthStatus.SUCCESS)
             onAuth(username);
+       else showMessage(status.getMessage());
         return status;
     }
 
-    public void syncData() throws RemoteException {
+    public void syncData() throws Exception {
         this.events = rmi.getAvailableEvents();
+        this.ticketsbuffer = rmi.getMyTickets(Sessionusername);
 
     }
 
+    public void deleteAccount() throws Exception {
+        rmi.deleteAccount(Sessionusername);
+    }
+
+    public void deleteEvent(String eventid) throws Exception {
+        rmi.deleteEvent(eventid);
+        syncData();
+        syncGUIevents();
+    }
     public void book(Event event, Show show , int seats) throws Exception {
         String eventid = event.getId();
         if(!rmi.book(Sessionusername,event,show,seats)){
-            showMessage("Λυπούμαστε αλλά η διάθεση των εισιτηρίων για αυτό το θέαμα έχει σταματήσει");
-
-        }
+            showMessage("Λυπούμαστε αλλά η διάθεση των εισιτηρίων για αυτό το θέαμα έχει σταματήσει"); }
 
         syncData();
         for(Event e:events){
@@ -108,6 +119,7 @@ public class FrontendManager {
         }
             mainWindow.bookingSection.jframe.dispose();
         syncGUIevents();
+        mainWindow.updatetickets(rmi.getMyTickets(Sessionusername));
 
     }
 
@@ -122,7 +134,7 @@ public class FrontendManager {
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JOptionPane.showMessageDialog(null, "MEGALH EKPTOSI STA TRYPAKIA");
+                JOptionPane.showMessageDialog(null, message);
             }
         });
     }
@@ -130,8 +142,6 @@ public class FrontendManager {
     public void showMessage(String message) throws Exception {
         ShowMessage(message);
 
-        syncData();
-        syncGUIevents();
 
 
     }

@@ -18,4 +18,6 @@ public interface ClientInterface extends Remote {
     public void addEvent(Event event) throws Exception;
     public ArrayList<Ticket> getUserTickets(String username) throws Exception;
     public void deleteTicket(Ticket ticket) throws Exception;
+    public void deleteEvent(String event) throws Exception;
+    public void deleteAccount(String username) throws Exception;
 }

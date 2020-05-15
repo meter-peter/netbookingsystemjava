@@ -13,7 +13,7 @@ public class LoginRegister extends JFrame {
     FrontendManager frontendManager;
 
     public LoginRegister (FrontendManager frontendManager) {
-        this.setVisible(true);
+
         setLocationRelativeTo(null);
         this.frontendManager = frontendManager;
         setTitle("Please Register To Continue");
@@ -137,10 +137,9 @@ public class LoginRegister extends JFrame {
                 }
             }
         });
+        this.setVisible(true);
     }
-    public void onregister(){
 
-    }
 
 
 

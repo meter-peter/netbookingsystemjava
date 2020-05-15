@@ -39,17 +39,24 @@ public class AuthService {
         }
     }
 
+    public void deleteAccount(String username){
+        for(int i=0;i<users.size();i++){
+            if(username.equals(users.get(i).getUsername())){
+                users.remove(i);
+                updateUsers(users);
+            }
+        }
+    }
+
     public AuthStatus loginAccount(String username, String password) throws Exception {
         boolean flag = false;
+        if(!containsName(users,username))
+            return AuthStatus.NOT_FOUND;
         for (User tobesearched : users) { //ελεγχουμε ολη τη λιστα με τους λογαριασμούς
-            if (tobesearched.getUsername().toLowerCase().equals(username.toLowerCase())) { //αν βρουμε το username συγκρίνουμε τα base64 των hashes;
+            if (tobesearched.getUsername().toLowerCase().equals(username.toLowerCase())) {
 
                 if (tobesearched.getPassword().equals(password)) {
                     System.out.println("SUCCESS");
-                    toAuth = tobesearched;
-                  //  controller.continuewithlogin(toAuth);
-
-                    flag = true;
                     return AuthStatus.SUCCESS;
                 } else {
                     java.util.concurrent.TimeUnit.SECONDS.sleep(2); //timeout se periptwsh pou to exei lathos gia na kathysterhsoume se periptwsh bruteforce attack;
@@ -74,11 +81,10 @@ public class AuthService {
             loggedInUsers.add(tobecreated);
             updateUsers(users);
             return AuthStatus.SUCCESS;
-        }
-        return AuthStatus.DUPLICATE_USER;
+        }else  return AuthStatus.DUPLICATE_USER;
     }
 
-    private boolean containsName(List<User> list, String name) { //ελεγχος για το αν υπαρχει εγγεγραμένος χρήστης
+    private boolean containsName(ArrayList<User> list, String name) { //ελεγχος για το αν υπαρχει εγγεγραμένος χρήστης
         try {
             return list.stream().filter(o -> o.getUsername().equals(name)).findFirst().isPresent();
         } catch (NullPointerException e) {

@@ -57,8 +57,7 @@ public class BookingSection {
 
         jframe.setLocationRelativeTo(null);
         jframe.add(jPanel);
-        jframe.pack();
-        jframe.setVisible(true);
+
 
         bookbutton.addActionListener(new ActionListener() {
             @Override
@@ -73,6 +72,9 @@ public class BookingSection {
         });
 jPanel.setSize(800,600);
 jPanel.setVisible(true);
+        jframe.pack();
+        jframe.setVisible(true);
+
 
 
     }
