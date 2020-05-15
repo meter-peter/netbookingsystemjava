@@ -105,8 +105,9 @@ public class FrontendManager {
             if(e.getId().equals(eventid));
             mainWindow.bookingSection.setEvent(e);
             SwingUtilities.updateComponentTreeUI(mainWindow.bookingSection.jframe);
-        }
             mainWindow.bookingSection.jframe.dispose();
+        }
+
         syncGUIevents();
 
     }
