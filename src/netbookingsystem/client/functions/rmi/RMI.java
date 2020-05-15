@@ -5,6 +5,7 @@ import netbookingsystem.UserInterface;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.base.Ticket;
 
 import java.net.Inet4Address;
 import java.rmi.Naming;
@@ -31,6 +32,9 @@ public class RMI {
            }
 
         }
+        public ArrayList<Ticket> getMyTickets(String username) throws Exception {
+                return stub.getUserTickets(username);
+        }
 
         public AuthStatus login(String username , String password, UserInterface userInterface) throws Exception {
            return stub.login(username, password,userInterface);
@@ -45,13 +49,18 @@ public class RMI {
             return stub.getAvailableEvents();
         }
 
-        public void book(String username , Event event , Show show , int seats) throws Exception {
-            stub.book(username,event,show,seats);
+        public boolean book(String username , Event event , Show show , int seats) throws Exception {
+           return stub.book(username,event,show,seats);
         }
 
         public void addEvent(Event event) throws Exception {
             stub.addEvent(event);
         }
+
+        public void deleteTicket(Ticket ticket) throws Exception {
+                stub.deleteTicket(ticket);
+        }
+
 }
 
 

@@ -14,7 +14,7 @@ public class RemoteUtils extends UnicastRemoteObject implements UserInterface {
         this.frontendManager=frontendManager;
     }
 
-    public void pushNotification(String message) throws RemoteException, ParseException {
+    public void pushNotification(String message) throws Exception {
         frontendManager.showMessage(message);
 
     }

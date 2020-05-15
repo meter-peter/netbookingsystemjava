@@ -51,7 +51,7 @@ public class ServerController {
 
 
 
-    public void showDiscountMessage() throws RemoteException, ParseException {
+    public void showDiscountMessage() throws Exception {
         for(UserInterface user : loggedUsers){
             user.pushNotification("WELCOME");
 
@@ -82,32 +82,52 @@ public class ServerController {
     }
 
 
+    public ArrayList<Ticket> getUserTickets(String username) throws IOException, ClassNotFoundException {
+        syncData();
+        ArrayList<Ticket> temp = new ArrayList<>();
+        for(Ticket ticket:liveTickets){
+            if ((ticket.getTicketHolder().equals(username)))
+                temp.add(ticket);
+        }
+        return temp;
+    }
 
-    public double book(String userid , Event event , Show show,int seats) throws IOException, ParseException {
-    System.out.println(userid+event.getTitle()+show.getId()+seats);
+    public void deleteTicket(Ticket ticket) throws IOException, ClassNotFoundException {
+        syncData();
+        for(Ticket t:liveTickets){
+            if(ticket.getId().equals(t.getId()));
+            liveTickets.remove(t);
 
+
+        }
+
+    }
+
+    public boolean book(String userid , Event event , Show show, int seats) throws Exception {
+        System.out.println(userid+event.getTitle()+show.getId()+seats);
         for (int i = 0; i < liveEvents.size(); i++) {
             if (event.getId().equals(liveEvents.get(i).getId())) {
-                System.out.println(liveEvents.get(i));
                 for (int j = 0; j < liveEvents.get(i).getShows().size(); j++) {
-                    Show temp =liveEvents.get(i).getShows().get(j);
-                    if (show.getId().equals(temp.getId())) {
 
+                    Show temp =liveEvents.get(i).getShows().get(j);
+
+                    if (show.getId().equals(temp.getId())&&temp.getAvailSeats()>seats) {
                         Ticket ticket = new Ticket(userid, seats, event.getTitle(), temp);
                         ticket.setPriceSum(liveEvents.get(i).getShows().get(j).bookseats(seats));
                         onBook(liveEvents.get(i).getId(),ticket,temp);
-                        return 0.0;
+                        return true;
                     }
+                    else return false;
                 }
 
             }
 
         }
 
-        return 0.0;
+        return false;
     }
 
-    public void onBook(String id,Ticket ticket , Show show) throws IOException, ParseException {
+    public void onBook(String id,Ticket ticket , Show show) throws Exception {
         getLiveTickets().add(ticket);
         dbFunctions.addTicket(ticket);
 

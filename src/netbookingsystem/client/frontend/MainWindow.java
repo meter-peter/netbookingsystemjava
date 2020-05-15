@@ -3,6 +3,7 @@ package netbookingsystem.client.frontend;
 //import javafx.scene.control.DatePicker;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.EventType;
+import netbookingsystem.server.core.base.Ticket;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -12,9 +13,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,7 +26,7 @@ public class MainWindow {
     JFrame jFrame;
     JPanel content;
     JSplitPane jSplitPane;
-    DefaultListModel defaultListModel;
+    DefaultListModel eventmodel;
     JList<Event> eventJList;
     JPanel options;
     JComboBox<String> type;
@@ -44,20 +43,20 @@ public class MainWindow {
     EventAdd eventadd;
     BookingSection bookingSection;
 
-
-
-    //DatePicker datePickerFrom;
-    //DatePicker datePickerTo;
+    JList mytickets;
+    DefaultListModel ticketmodel;
 
     public MainWindow(String user, FrontendManager frontendManager){
         this.username=user;
         this.frontendManager=frontendManager;
+        ticketmodel = new DefaultListModel();
+        mytickets = new JList<>(ticketmodel);
         clone=this;
         jFrame=new JFrame("Siva");
         content=new JPanel();
         jSplitPane = new JSplitPane();
-        defaultListModel = new DefaultListModel();
-        eventJList = new JList<>(defaultListModel);
+        eventmodel = new DefaultListModel();
+        eventJList = new JList<>(eventmodel);
         options = new JPanel();
         button = new Button("Find Tickets");
         logoutbtn = new JButton("Logout");
@@ -74,10 +73,6 @@ public class MainWindow {
                bookingSection = new BookingSection(selectedEvent,frontendManager,clone);
             }}
         });
-
-
-
-        //datePickerto.getModel().getValue();
 
         JLabel from = new JLabel("Από");
         JLabel to = new JLabel("Μέχρι");
@@ -104,8 +99,6 @@ public class MainWindow {
                 }
             });
         }
-
-
         jFrame.setContentPane(content);
         content.add(jSplitPane);
         jSplitPane.setRightComponent(options);
@@ -128,6 +121,8 @@ public class MainWindow {
                     frontendManager.syncGUIevents();
                 } catch (ParseException parseException) {
                     parseException.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -146,6 +141,9 @@ public class MainWindow {
             }
         });
 
+        options.add(mytickets);
+
+
     }
 
     public JList<Event> getEventJList() {
@@ -155,7 +153,7 @@ public class MainWindow {
     public void updatelist(ArrayList<Event> list){
         eventArrayList=list;
         System.out.println(eventArrayList);
-        defaultListModel.clear();
+        eventmodel.clear();
         int x =0 ;
         for(int i=0;i<list.size();i++){
             if(eventArrayList.get(i).getEventType().getType().equals(type.getSelectedItem())){
@@ -171,12 +169,12 @@ public class MainWindow {
 
                         if(datefrom.before(eventdate) && dateto.after(eventdate)){
 
-                            defaultListModel.add(x,eventArrayList.get(i));
+                            eventmodel.add(x,eventArrayList.get(i));
                             x++;
 
                         }
                     }else{
-                        defaultListModel.add(x,eventArrayList.get(i));
+                        eventmodel.add(x,eventArrayList.get(i));
                         x++;
 
                     }
@@ -221,6 +219,10 @@ public class MainWindow {
         });
 
 
+    }
+
+    public void updatetickets(ArrayList<Ticket> tickets){
+        ticketmodel.addAll(tickets);
     }
 
 

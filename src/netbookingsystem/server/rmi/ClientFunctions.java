@@ -10,6 +10,7 @@ import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.ServerController;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.base.Ticket;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -26,6 +27,10 @@ public class ClientFunctions implements ClientInterface {
         this.authService = authService;
         this.controller=controller;
 
+    }
+
+    public ArrayList<Ticket> getUserTickets(String username) throws IOException, ClassNotFoundException {
+        return controller.getUserTickets(username);
     }
 
     public AuthStatus login(String username, String password , UserInterface clientInterface) throws Exception {
@@ -48,12 +53,17 @@ public class ClientFunctions implements ClientInterface {
 
     }
 
-    public void book(String username , Event event, Show show , int seats) throws IOException, ParseException {
-        controller.book(username, event, show, seats);
+    public boolean book(String username , Event event, Show show , int seats) throws Exception {
+      return controller.book(username, event, show, seats);
     }
 
     public void addEvent(Event event) throws Exception{
         controller.addEvent(event);
+
+    }
+
+    public void deleteTicket(Ticket ticket) throws IOException, ClassNotFoundException {
+        controller.deleteTicket(ticket);
 
     }
 }

@@ -5,6 +5,7 @@ import netbookingsystem.client.functions.rmi.RemoteUtils;
 import netbookingsystem.server.auth.AuthStatus;
 import netbookingsystem.server.core.base.Event;
 import netbookingsystem.server.core.base.Show;
+import netbookingsystem.server.core.base.Ticket;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,18 @@ public class FrontendManager {
 
     }
 
+    public void cancelTicket(Ticket ticket) throws Exception {
+        rmi.deleteTicket(ticket);
+
+    }
+
+    public void getTickets() throws Exception {
+
+        mainWindow.ticketmodel.clear();
+        mainWindow.ticketmodel.addAll(rmi.getMyTickets(Sessionusername));
+
+    }
+
     public ArrayList<Event> getEvents() {
         return events;
     }
@@ -43,8 +56,9 @@ public class FrontendManager {
         loginRegister = new LoginRegister(this);
     }
 
-    public void syncGUIevents() throws ParseException {
+    public void syncGUIevents() throws Exception {
        mainWindow.updatelist(events);
+       getTickets();
         SwingUtilities.updateComponentTreeUI(mainWindow.jFrame);
 
         }
@@ -81,7 +95,11 @@ public class FrontendManager {
 
     public void book(Event event, Show show , int seats) throws Exception {
         String eventid = event.getId();
-        rmi.book(Sessionusername,event,show,seats);
+        if(!rmi.book(Sessionusername,event,show,seats)){
+            showMessage("Λυπούμαστε αλλά η διάθεση των εισιτηρίων για αυτό το θέαμα έχει σταματήσει");
+
+        }
+
         syncData();
         for(Event e:events){
             if(e.getId().equals(eventid));
@@ -109,7 +127,7 @@ public class FrontendManager {
         });
     }
 
-    public void showMessage(String message) throws ParseException, RemoteException {
+    public void showMessage(String message) throws Exception {
         ShowMessage(message);
 
         syncData();
